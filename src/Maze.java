@@ -37,11 +37,24 @@ public class Maze {
 	public Integer getWidth() {
 		return width;
 	}
+	public void printArray() {
+		for(int h = 0; h < height; h++) {
+			for(int w = 0; w < width; w++) {
+				if(mazeArray[h][w])
+					System.out.print("1  ");
+				else
+					System.out.print("0  ");
+			}
+			System.out.println();
+		}
+	}
 	public BufferedImage getImage() {
 		return image;
 	}
 	public static void main(String[] args) {
-		new Maze("E:\\\\Computer Science\\\\GitHub\\\\MazeSolver\\\\Maze.png");
+		Maze m = new Maze("E:\\\\Computer Science\\\\GitHub\\\\MazeSolver\\\\Maze.png");
+		m.getArray();
+		m.printArray();
 		
 	}
 }
