@@ -10,12 +10,9 @@ public class Path {
 	public ArrayList<int[]> getPathArray() {
 		return pathArray;
 	}
-	public void addPoint(int x, int y, int location) {
-		int[] coordinates = {x,y};
-		pathArray.add(location,coordinates);
-	}
 	public void addPoint(int x, int y) {
-		addPoint(x,y,pathArray.size());
+		int[] coordinates = {x,y};
+		pathArray.add(coordinates);
 	}
 	public void deletePoint(int location) {
 		pathArray.remove(location);
