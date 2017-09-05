@@ -23,9 +23,10 @@ public class MazeDisplay extends JFrame {
 		this.repaint();
 	}
 	public static void main(String[] args) {
-		MazeDisplay d = new MazeDisplay(new Maze("E:\\\\Computer Science\\\\GitHub\\\\MazeSolver\\\\Maze.png"));
-		//new MazeDisplay(new Maze("C:\\\\Documents\\\\\\\\GitHub\\\\\\\\MazeSolver\\\\\\\\Maze.png"));
-		d.changeColor(new Point(0,3), Color.BLUE);
+		Maze m = new Maze("E:\\\\Computer Science\\\\GitHub\\\\MazeSolver\\\\Maze.png");
+		//Maze m = new Maze("C:\\\\Documents\\\\\\\\GitHub\\\\\\\\MazeSolver\\\\\\\\Maze.png");
+		MazeDisplay d = new MazeDisplay(m);
+		d.changeColor(m.getPoint(0,3), Color.BLUE);
 	}
 
 }

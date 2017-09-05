@@ -8,7 +8,7 @@ import javax.swing.JComponent;
 public class Maze extends JComponent{
 
 	private static final long serialVersionUID = 1L;
-	private boolean[][] mazeArray;
+	private Point[][] mazeArray;
 	private BufferedImage image;
 	private int width, height;
 	public Maze(String fileName) {
@@ -21,7 +21,7 @@ public class Maze extends JComponent{
 		height = image.getHeight();
 		width = image.getWidth();
 		setSize(930,620);
-		mazeArray = new boolean[height][width];
+		mazeArray = new Point[height][width];
 		for(int h = 0; h < height; h++) {
 			for(int w = 0; w < width; w++) {
 				int pixel = image.getRGB(w, h);
@@ -29,13 +29,13 @@ public class Maze extends JComponent{
  				int green = (pixel >> 8) & 0xff;
  				int blue = (pixel) & 0xff;
  				if((red == 0) && (green == 0) && (blue == 0))
- 					mazeArray[h][w] = true;
+ 					mazeArray[h][w] = new Point(h,w,true);
  				else
- 					mazeArray[h][w] = false;
+ 					mazeArray[h][w] = new Point(h,w,false);
 			}
 		}
 	}
-	public boolean[][] getArray() {
+	public Point[][] getArray() {
 		return mazeArray;
 	}
 	public Integer getMazeHeight() {
@@ -50,13 +50,16 @@ public class Maze extends JComponent{
 	public void printArray() {
 		for(int h = 0; h < height; h++) {
 			for(int w = 0; w < width; w++) {
-				if(mazeArray[h][w])
+				if(mazeArray[h][w].isBlocked())
 					System.out.print("1  ");
 				else
 					System.out.print("0  ");
 			}
 			System.out.println();
 		}
+	}
+	public Point getPoint(int x, int y) {
+		return mazeArray[x][y];
 	}
 	public void paintComponent(Graphics g) {
 		Image drawImage = image.getScaledInstance(this.getWidth(),this.getHeight(),BufferedImage.SCALE_SMOOTH);

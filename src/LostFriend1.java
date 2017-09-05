@@ -11,10 +11,10 @@ public class LostFriend1 {
 	
 	
 	public LostFriend1(int x, int y, Maze startMaze) {
-		this.startingPoint = new Point(x,y);
-		this.currentPoint = new Point(x,y);
-		surrounding = new ArrayList<Point>();
 		this.maze = startMaze;
+		this.startingPoint = maze.getPoint(x,y);
+		this.currentPoint = maze.getPoint(x,y);
+		surrounding = getSurroundings();
 		}
 
 	public ArrayList<Point> getSurroundings() {
@@ -24,16 +24,21 @@ public class LostFriend1 {
 		int mazeWidth = maze.getMazeWidth();
 		int mazeHeight = maze.getMazeHeight();
 		if(x > 0) 
-			surrounding.add(new Point(x-1,y)); //Left
+			surrounding.add(maze.getPoint(x-1,y)); //Left
 		if(x < mazeWidth)
-			surrounding.add(new Point(x+1,y)); //Right
+			surrounding.add(maze.getPoint(x+1,y)); //Right
 		if(y > 0)
-			surrounding.add(new Point(x,y-1)); //Up
+			surrounding.add(maze.getPoint(x,y-1)); //Up
 		if(y < mazeHeight)
-			surrounding.add(new Point(x,y+1)); //Down
+			surrounding.add(maze.getPoint(x,y+1)); //Down
 		return surrounding;
 	}
-	
+	public void moveTo(Point point) {
+		
+	}
+	public Point getStartingPoint() {
+		return startingPoint;
+	}
 	public static void main(String[] args) {
 		//Maze x = new Maze("C:\\\\Documents\\\\GitHub\\\\MazeSolver\\\\Maze.png");
 		Maze x = new Maze("E:\\\\Computer Science\\\\GitHub\\\\MazeSolver\\\\Maze.png");

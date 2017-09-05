@@ -1,8 +1,8 @@
 
 public class Point {
 	private int x, y;
-	public Boolean traveled;
-	public Point(int x, int y) {
+	public Boolean traveled, blocked;
+	public Point(int x, int y, boolean blocked) {
 		this.x = x;
 		this.y = y;
 		traveled = false;
@@ -26,7 +26,7 @@ public class Point {
 	public void setTraveled(boolean traveled) {
 		this.traveled = traveled;
 	}
-	public boolean isBlocked(boolean[][] maze) {
-		return maze[x][y];
+	public boolean isBlocked() {
+		return blocked;
 	}
 }
