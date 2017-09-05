@@ -6,11 +6,11 @@ public class LostFriend1 {
 	private Point startingPoint;
 	private Point currentPoint;
 	private ArrayList<Point> surrounding;
-	private String direction;
+	private String direction; //TODO: Method to find direction
 	private Maze maze;
 	
 	
-	public LostFriend1(int x, int y, Maze startMaze) {
+	public LostFriend1(int x, int y, Maze startMaze) { //TODO: Make this class the generic friend (Abstract Classes), extend it into 3 others for the algorithms?
 		this.maze = startMaze;
 		this.startingPoint = maze.getPoint(x,y);
 		this.currentPoint = maze.getPoint(x,y);
@@ -34,7 +34,7 @@ public class LostFriend1 {
 		return surrounding;
 	}
 	public void moveTo(Point point) {
-		
+		//TODO: Implement this to move the Friend, and handle pathTaken
 	}
 	public Point getStartingPoint() {
 		return startingPoint;
