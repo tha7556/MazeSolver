@@ -4,6 +4,7 @@ public class LostFriend1 {
 
 	private Path pathTaken;
 	private int[] startingPoint;
+	private int[] currentPoint;
 	private ArrayList<int[]> surrounding;
 	private String direction;
 	private boolean[] maze;
@@ -16,7 +17,9 @@ public class LostFriend1 {
 		
 	}
 
-	public ArrayList<int[]>() getSurroundings() {
+	public ArrayList<int[]> getSurroundings() {
+		return null;
+	}
 
 	
 
