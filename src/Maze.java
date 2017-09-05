@@ -1,8 +1,13 @@
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
+import javax.swing.JComponent;
 
-public class Maze {
+public class Maze extends JComponent{
+
+	private static final long serialVersionUID = 1L;
 	private boolean[][] mazeArray;
 	private BufferedImage image;
 	private int width, height;
@@ -28,13 +33,17 @@ public class Maze {
 			}
 		}
 	}
+	public void paintComponent(Graphics g) {
+		Image drawImage = image.getScaledInstance(930,620,BufferedImage.SCALE_SMOOTH);
+		g.drawImage(drawImage, 0, 0, null);
+	}
 	public boolean[][] getArray() {
 		return mazeArray;
 	}
-	public Integer getHeight() {
+	public Integer getMazeHeight() {
 		return height;
 	}
-	public Integer getWidth() {
+	public Integer getMazeWidth() {
 		return width;
 	}
 	public void printArray() {
@@ -53,6 +62,7 @@ public class Maze {
 	}
 	public static void main(String[] args) {
 		Maze m = new Maze("E:\\\\Computer Science\\\\GitHub\\\\MazeSolver\\\\Maze.png");
+		//Maze m = new Maze("C:\\\\Documents\\\\GitHub\\\\MazeSolver\\\\Maze.png");
 		m.getArray();
 		m.printArray();
 		

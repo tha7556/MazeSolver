@@ -25,8 +25,8 @@ public class LostFriend1 {
 	
 
 	public static void main(String[] args) {
-		Maze x = new Maze("C:\\\\Documents\\\\GitHub\\\\MazeSolver\\\\Maze.png");
-		//Maze x = new Maze("E:\\\\Computer Science\\\\GitHub\\\\MazeSolver\\\\Maze.png");
+		//Maze x = new Maze("C:\\\\Documents\\\\GitHub\\\\MazeSolver\\\\Maze.png");
+		Maze x = new Maze("E:\\\\Computer Science\\\\GitHub\\\\MazeSolver\\\\Maze.png");
 		
 		LostFriend1 bob = new LostFriend1(0,3, x.getArray());
 		
