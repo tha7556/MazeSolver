@@ -14,11 +14,13 @@ public class Maze extends JComponent{
 	public Maze(String fileName) {
 		try {
 			image = ImageIO.read(new File(fileName));
-		}catch(Exception e) {
+		}
+		catch(Exception e) {
 			e.printStackTrace();
 		}
 		height = image.getHeight();
 		width = image.getWidth();
+		setSize(930,620);
 		mazeArray = new boolean[height][width];
 		for(int h = 0; h < height; h++) {
 			for(int w = 0; w < width; w++) {
@@ -33,10 +35,6 @@ public class Maze extends JComponent{
 			}
 		}
 	}
-	public void paintComponent(Graphics g) {
-		Image drawImage = image.getScaledInstance(930,620,BufferedImage.SCALE_SMOOTH);
-		g.drawImage(drawImage, 0, 0, null);
-	}
 	public boolean[][] getArray() {
 		return mazeArray;
 	}
@@ -45,6 +43,9 @@ public class Maze extends JComponent{
 	}
 	public Integer getMazeWidth() {
 		return width;
+	}
+	public BufferedImage getImage() {
+		return image;
 	}
 	public void printArray() {
 		for(int h = 0; h < height; h++) {
@@ -57,8 +58,9 @@ public class Maze extends JComponent{
 			System.out.println();
 		}
 	}
-	public BufferedImage getImage() {
-		return image;
+	public void paintComponent(Graphics g) {
+		Image drawImage = image.getScaledInstance(this.getWidth(),this.getHeight(),BufferedImage.SCALE_SMOOTH);
+		g.drawImage(drawImage, 0, 0, null);
 	}
 	public static void main(String[] args) {
 		Maze m = new Maze("E:\\\\Computer Science\\\\GitHub\\\\MazeSolver\\\\Maze.png");

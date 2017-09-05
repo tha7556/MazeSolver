@@ -1,5 +1,5 @@
 import java.awt.Color;
-
+import java.awt.Graphics;
 import javax.swing.JFrame;
 
 public class MazeDisplay extends JFrame {
@@ -7,10 +7,13 @@ public class MazeDisplay extends JFrame {
 	private Maze maze;
 	public MazeDisplay(Maze maze) {
 		this.maze = maze;
-		setSize(945, 665);
+		setSize((int)maze.getBounds().getWidth(), (int)maze.getBounds().getHeight());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		add(maze);
 		setVisible(true);
+	}
+	public void paint(Graphics g) {
+		super.paint(g);		
 	}
 	public Maze getMaze() {
 		return maze;
@@ -20,8 +23,9 @@ public class MazeDisplay extends JFrame {
 		this.repaint();
 	}
 	public static void main(String[] args) {
-		new MazeDisplay(new Maze("E:\\\\Computer Science\\\\GitHub\\\\MazeSolver\\\\Maze.png"));
+		MazeDisplay d = new MazeDisplay(new Maze("E:\\\\Computer Science\\\\GitHub\\\\MazeSolver\\\\Maze.png"));
 		//new MazeDisplay(new Maze("C:\\\\Documents\\\\\\\\GitHub\\\\\\\\MazeSolver\\\\\\\\Maze.png"));
+		d.changeColor(new Point(0,3), Color.BLUE);
 	}
 
 }
