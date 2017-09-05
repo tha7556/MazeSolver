@@ -3,16 +3,17 @@ import java.util.ArrayList;
 public class LostFriend1 {
 
 	private Path pathTaken;
-	private int[] startingPoint;
-	private int[] currentPoint;
-	private ArrayList<int[]> surrounding;
+	private Point startingPoint;
+	private Point currentPoint;
+	private ArrayList<Point> surrounding;
 	private String direction;
-	private boolean[] maze;
+	private boolean[][] maze;
 	
 	
 	public LostFriend1(int x, int y, boolean[][] startMaze) {
-		this.startingPoint = new int[] {x,y};
-		surrounding = new ArrayList<int[]>();
+		this.startingPoint = new Point(x,y);
+		surrounding = new ArrayList<Point>();
+		this.maze = startMaze;
 		
 		
 	}
@@ -23,13 +24,14 @@ public class LostFriend1 {
 
 	
 
-public static void main(String[] args) {
-	Maze x = new Maze("C:\\\\Documents\\\\GitHub\\\\MazeSolver\\\\Maze.png");
-	
-	LostFriend1 bob = new LostFriend1(0,3, x.getArray());
-	
-	
-}
+	public static void main(String[] args) {
+		Maze x = new Maze("C:\\\\Documents\\\\GitHub\\\\MazeSolver\\\\Maze.png");
+		//Maze x = new Maze("E:\\\\Computer Science\\\\GitHub\\\\MazeSolver\\\\Maze.png");
+		
+		LostFriend1 bob = new LostFriend1(0,3, x.getArray());
+		
+		
+	}
 	
 	
 }
