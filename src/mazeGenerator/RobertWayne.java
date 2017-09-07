@@ -1,4 +1,5 @@
 package mazeGenerator;
+import StdDraw.java
 
 public class RobertWayne {
     private int n;                 // dimension of maze
