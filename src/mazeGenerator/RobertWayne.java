@@ -1,5 +1,4 @@
 package mazeGenerator;
-import StdDraw.java
 
 public class RobertWayne {
     private int n;                 // dimension of maze
@@ -168,7 +167,7 @@ public class RobertWayne {
 
     // a test client
     public static void main(String[] args) {
-        int n = Integer.parseInt(args[0]);
+        int n = 90;
         RobertWayne maze = new RobertWayne(n);
         StdDraw.enableDoubleBuffering();
         maze.draw();
