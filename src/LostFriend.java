@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.util.ArrayList;
 
 public class LostFriend {
@@ -8,12 +9,13 @@ public class LostFriend {
 	private String direction; //TODO: Method to find direction
 	private Point north, south, east, west;
 	private Maze maze;
-	
+	//TODO: Find way to either generate or pull mazes from library Sample size of > 30
 	
 	public LostFriend(int x, int y, Maze startMaze) { //TODO: Make this class the generic friend (Abstract Classes), extend it into 3 others for the algorithms?
 		this.maze = startMaze;
 		this.startingPoint = maze.getPoint(x,y);
 		this.currentPoint = maze.getPoint(x,y);
+		this.startingPoint.changeColor(Color.BLUE);
 		getSurroundings();
 		}
 
@@ -24,12 +26,20 @@ public class LostFriend {
 		int mazeHeight = maze.getMazeHeight();
 		if(x > 0) 
 			west = maze.getPoint(x-1,y);
+		else
+			west = null;
 		if(x < mazeWidth)
 			east = maze.getPoint(x+1,y);
+		else
+			east = null;
 		if(y > 0)
 			north = maze.getPoint(x,y-1);
+		else
+			north = null;
 		if(y < mazeHeight)
-			east = maze.getPoint(x,y+1);
+			south = maze.getPoint(x,y+1);
+		else
+			south = null;
 	}
 	
 	public void moveTo(Point point) {
@@ -37,6 +47,7 @@ public class LostFriend {
 		if (point.isBlocked() != true)
 			this.currentPoint = maze.getPoint(point.getX(), point.getY());
 		point.setTraveled(true);
+		point.changeColor(Color.BLUE);
 	}
 	public Point getNorth() {
 		return north;
