@@ -1,11 +1,14 @@
+import java.awt.Color;
 
 public class Point {
 	private int x, y;
-	public Boolean traveled, blocked;
+	private Boolean traveled, blocked;
+	private MazeDisplay mazeDisplay;
 	public Point(int x, int y, boolean blocked) {
 		this.x = x;
 		this.y = y;
 		traveled = false;
+		this.blocked = blocked;
 		
 	}
 	public Integer getX() {
@@ -28,5 +31,14 @@ public class Point {
 	}
 	public boolean isBlocked() {
 		return blocked;
+	}
+	public void setMazeDisplay(MazeDisplay mazeDisplay) {
+		this.mazeDisplay = mazeDisplay;
+	}
+	public MazeDisplay getMazeDisplay() {
+		return mazeDisplay;
+	}
+	public void changeColor(Color color) {
+		mazeDisplay.changeColor(this, color);
 	}
 }
