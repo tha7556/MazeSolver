@@ -41,13 +41,25 @@ public class LostFriend {
 		else
 			south = null;
 	}
-	
+	public ArrayList<Point> getAvailablePoints() {
+		ArrayList<Point> points = new ArrayList<Point>();
+		if(getNorth() != null && !getNorth().isBlocked())
+			points.add(getNorth());
+		if(getSouth() != null && !getSouth().isBlocked())
+			points.add(getSouth());
+		if(getEast() != null && !getEast().isBlocked())
+			points.add(getEast());
+		if(getWest() != null && !getWest().isBlocked())
+			points.add(getWest());
+		return points;
+	}
 	public void moveTo(Point point) {
 		//TODO: Implement this to move the Friend, and handle pathTaken
-		if (point.isBlocked() != true)
+		if (getAvailablePoints().contains(point))
 			this.currentPoint = maze.getPoint(point.getX(), point.getY());
 		point.setTraveled(true);
 		point.changeColor(Color.BLUE);
+		pathTaken.addPoint(point.getX(), point.getY());
 	}
 	public Point getNorth() {
 		return north;
