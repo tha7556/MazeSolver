@@ -5,8 +5,8 @@ public class LostFriend {
 	private Path pathTaken;
 	private Point startingPoint;
 	private Point currentPoint;
-	private ArrayList<Point> surrounding;
 	private String direction; //TODO: Method to find direction
+	private Point north, south, east, west;
 	private Maze maze;
 	
 	
@@ -14,24 +14,22 @@ public class LostFriend {
 		this.maze = startMaze;
 		this.startingPoint = maze.getPoint(x,y);
 		this.currentPoint = maze.getPoint(x,y);
-		surrounding = getSurroundings();
+		getSurroundings();
 		}
 
-	public ArrayList<Point> getSurroundings() {
-		surrounding = new ArrayList<Point>();
+	public void getSurroundings() {
 		int x = currentPoint.getX();
 		int y = currentPoint.getY();
 		int mazeWidth = maze.getMazeWidth();
 		int mazeHeight = maze.getMazeHeight();
 		if(x > 0) 
-			surrounding.add(maze.getPoint(x-1,y)); //Left
+			west = maze.getPoint(x-1,y);
 		if(x < mazeWidth)
-			surrounding.add(maze.getPoint(x+1,y)); //Right
+			east = maze.getPoint(x+1,y);
 		if(y > 0)
-			surrounding.add(maze.getPoint(x,y-1)); //Up
+			north = maze.getPoint(x,y-1);
 		if(y < mazeHeight)
-			surrounding.add(maze.getPoint(x,y+1)); //Down
-		return surrounding;
+			east = maze.getPoint(x,y+1);
 	}
 	
 	public void moveTo(Point point) {
@@ -41,16 +39,16 @@ public class LostFriend {
 		point.setTraveled(true);
 	}
 	public Point getNorth() {
-		return null;
+		return north;
 	}
 	public Point getSouth() {
-		return null;
+		return south;
 	}
 	public Point getEast() {
-		return null;
+		return east;
 	}
 	public Point getWest() {
-		return null;
+		return west;
 	}
 	public Point getStartingPoint() {
 		return startingPoint;
