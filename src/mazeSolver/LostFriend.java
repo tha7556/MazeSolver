@@ -1,5 +1,9 @@
+package mazeSolver;
 import java.awt.Color;
 import java.util.ArrayList;
+
+import mazeGenerator.Maze;
+import mazeGenerator.Point;
 
 public class LostFriend {
 
@@ -55,11 +59,14 @@ public class LostFriend {
 	}
 	public void moveTo(Point point) {
 		//TODO: Implement this to move the Friend, and handle pathTaken
-		if (getAvailablePoints().contains(point))
+		if (getAvailablePoints().contains(point)) {
 			this.currentPoint = maze.getPoint(point.getX(), point.getY());
-		point.setTraveled(true);
-		point.changeColor(Color.BLUE);
-		pathTaken.addPoint(point.getX(), point.getY());
+			point.setTraveled(true);
+			point.changeColor(Color.BLUE);
+			pathTaken.addPoint(point.getX(), point.getY());
+		}
+		else
+			System.out.println("Cannot move to point at: ("+point.getX()+","+point.getY()+")");
 	}
 	public Point getNorth() {
 		return north;

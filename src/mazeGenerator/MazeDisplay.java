@@ -1,6 +1,9 @@
+package mazeGenerator;
 import java.awt.Color;
 import java.awt.Graphics;
 import javax.swing.JFrame;
+
+import mazeSolver.LostFriend;
 
 public class MazeDisplay extends JFrame {
 	private static final long serialVersionUID = 1L;

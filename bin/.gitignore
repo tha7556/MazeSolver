@@ -1,10 +1,2 @@
-/Maze.class
-/runner1.class
-/LostFriend1.class
-/PathHolder.class
-/Path.class
-/Point.class
-/MazeFrame.class
-/MazeDisplay.class
-/LostFriend.class
-/LinearLeftTurn.class
+/mazeSolver/
+/mazeGenerator/

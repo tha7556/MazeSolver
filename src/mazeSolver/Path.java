@@ -1,4 +1,8 @@
+package mazeSolver;
 import java.util.ArrayList;
+
+import mazeGenerator.Maze;
+import mazeGenerator.Point;
 
 
 public class Path {
