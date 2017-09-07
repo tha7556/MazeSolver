@@ -15,7 +15,6 @@ public class LostFriend {
 		this.startingPoint = maze.getPoint(x,y);
 		this.currentPoint = maze.getPoint(x,y);
 		surrounding = getSurroundings();
-		direction = getDirection();
 		}
 
 	public ArrayList<Point> getSurroundings() {
@@ -41,16 +40,18 @@ public class LostFriend {
 			this.currentPoint = maze.getPoint(point.getX(), point.getY());
 		point.setTraveled(true);
 	}
-	
-	public String getDirection() {
-		String directionInitial = null;
-		surrounding = getSurroundings();
-		
-		if (surrounding.getPoint(x,y+1)) == null)
-			return "North";
-		
+	public Point getNorth() {
+		return null;
 	}
-	
+	public Point getSouth() {
+		return null;
+	}
+	public Point getEast() {
+		return null;
+	}
+	public Point getWest() {
+		return null;
+	}
 	public Point getStartingPoint() {
 		return startingPoint;
 	}
