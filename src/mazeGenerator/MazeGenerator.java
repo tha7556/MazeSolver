@@ -131,8 +131,9 @@ public class MazeGenerator {
 	};
  
 	public static void main(String[] args) {
-		int x = 100;
-		int y = 100; //x,y is width/height of maze
+		int x = 101;
+		int y = 101; //TODO: Memory error when x,y > 101
+		//TODO: IndexOutOfBounds error when x != y
 		MazeGenerator mazeGenerator = new MazeGenerator(x, y);
 		BufferedImage image = mazeGenerator.createMaze("E:\\test.png");
 	}
