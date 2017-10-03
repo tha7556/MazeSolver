@@ -19,9 +19,9 @@ public class MazeGenerator {
 	private int y;
 	private int[][] maze;
  
-	public MazeGenerator(int x, int y) {
-		this.x = x;
-		this.y = y;
+	public MazeGenerator(int size) {
+		this.x = size;
+		this.y = size;
 		maze = new int[this.x][this.y];
 	}
  
@@ -31,29 +31,29 @@ public class MazeGenerator {
 			String temp = "";
 			// draw the north edge
 			for (int j = 0; j < x; j++) {
-				System.out.print((maze[j][i] & 1) == 0 ? "+---" : "+   ");
+				//System.out.print((maze[j][i] & 1) == 0 ? "+---" : "+   ");
 				temp += (maze[j][i] & 1) == 0 ? "+-" : "+ ";
 			}
-			System.out.println("+");
+			//System.out.println("+");
 			temp += "+";
 			result.add(temp);
 			// draw the west edge
 			temp = "";
 			for (int j = 0; j < x; j++) {
-				System.out.print((maze[j][i] & 8) == 0 ? "|   " : "    ");
+				//System.out.print((maze[j][i] & 8) == 0 ? "|   " : "    ");
 				temp += (maze[j][i] & 8) == 0 ? "| " : "  ";
 			}
-			System.out.println("|");
+			//System.out.println("|");
 			temp += "|";
 			result.add(temp);
 		}
 		// draw the bottom line
 		String temp = "";
 		for (int j = 0; j < x; j++) {
-			System.out.print("+---");
+			//System.out.print("+---");
 			temp += "+-";
 		}
-		System.out.println("+");
+		//System.out.println("+");
 		temp += "+";
 		result.add(temp);
 		return result;
@@ -131,11 +131,18 @@ public class MazeGenerator {
 	};
  
 	public static void main(String[] args) {
-		int x = 101;
-		int y = 101; //TODO: Memory error when x,y > 101
-		//TODO: IndexOutOfBounds error when x != y
-		MazeGenerator mazeGenerator = new MazeGenerator(x, y);
-		BufferedImage image = mazeGenerator.createMaze("E:\\test.png");
+		//-Xss20M in run Configurations raises the recursion limit to allow size about <= 733 (usually, sometimes still crashes)
+		int size = 733; //TODO: Memory error when x,y > 101
+		MazeGenerator mazeGenerator = new MazeGenerator(size);
+		for(int i = 1; i <= 50; i++) {
+			try {
+				System.out.println(i);
+				BufferedImage image = mazeGenerator.createMaze("E:\\Computer Science\\Github\\MazeSolver\\Mazes\\Crazy\\Maze"+i+".png");
+			} 
+			catch(StackOverflowError e) {
+				i--; //Tries again in case of a stack overflow error
+			}
+		}
 	}
  
 }
