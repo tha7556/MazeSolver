@@ -37,4 +37,8 @@ public class Point {
 	public void changeColor(Color color) {
 		maze.getDisplay().changeColor(this, color);
 	}
+	@Override
+	public String toString() {
+		return "("+x+","+y+")";
+	}
 }
