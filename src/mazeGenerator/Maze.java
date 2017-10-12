@@ -22,7 +22,7 @@ public class Maze extends JComponent{
 		}
 		height = image.getHeight();
 		width = image.getWidth();
-		setSize(930,620);
+		setSize(930,930);
 		mazeArray = new Point[height][width];
 		for(int h = 0; h < height; h++) {
 			for(int w = 0; w < width; w++) {
@@ -72,7 +72,7 @@ public class Maze extends JComponent{
 		g.drawImage(drawImage, 0, 0, null);
 	}
 	public static void main(String[] args) {
-		Maze m = new Maze("E:\\\\Computer Science\\\\GitHub\\\\MazeSolver\\\\Maze.png");
+		Maze m = new Maze("E:\\Computer Science\\GitHub\\MazeSolver\\Mazes\\Small\\maze1.png");
 		//Maze m = new Maze("C:\\\\Documents\\\\GitHub\\\\MazeSolver\\\\Maze.png");
 		m.getArray();
 		m.printArray();
