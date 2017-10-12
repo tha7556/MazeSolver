@@ -16,18 +16,23 @@ public class Path {
 	public ArrayList<Point> getPathArray() {
 		return pathArray;
 	}
-	public void addPoint(int x, int y) {
-		Point coordinates = maze.getPoint(x,y);
-		pathArray.add(coordinates);
+	public void addPoint(Point point) {
+		pathArray.add(point);
 	}
-	public void deletePoint(int location) {
+	public Point deletePoint(int location) {
+		Point p = pathArray.get(location);
 		pathArray.remove(location);
+		return p;
+	}
+	public int size() {
+		return pathArray.size();
 	}
 	public static void main(String[] args) {
-		Path p = new Path(new Maze("C:\\\\Documents\\\\\\\\GitHub\\\\\\\\MazeSolver\\\\\\\\Maze.png"));
-		p.addPoint(0, 2);
+		Maze maze = new Maze("E:\\Computer Science\\GitHub\\MazeSolver\\Mazes\\Small\\maze1.png");
+		Path p = new Path(maze);
+		p.addPoint(maze.getPoint(0, 1));
 		for(Point point : p.getPathArray()) {
-			System.out.printf("{%d,%d}\n",point.getX(),point.getY());
+			System.out.println(point);
 		}
 		
 	}
