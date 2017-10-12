@@ -14,7 +14,7 @@ public abstract class LostFriend {
 	protected Point north, south, east, west, end;
 	protected Maze maze;
 	
-	public LostFriend(int startx, int starty, int endx, int endy, Maze startMaze) { //TODO: Make this class the generic friend (Abstract Classes), extend it into 3 others for the algorithms?
+	public LostFriend(int startx, int starty, int endx, int endy, Maze startMaze) {
 		this.maze = startMaze;
 		this.startingPoint = maze.getPoint(startx,starty);
 		this.currentPoint = maze.getPoint(startx,starty);

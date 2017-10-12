@@ -10,7 +10,7 @@ public class ManhattenDistanceFriend extends LostFriend{
 	}
 
 	@Override
-	public Point calculateMove() { //Implement
+	public Point calculateMove() { //TODO: Implement
 		return null;
 	}
 
