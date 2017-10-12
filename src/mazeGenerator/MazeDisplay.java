@@ -10,9 +10,6 @@ public class MazeDisplay extends JFrame {
 	private Maze maze;
 	public MazeDisplay(Maze maze) {
 		this.maze = maze;
-		for(Point[] pArr : maze.getArray())
-			for(Point p : pArr)
-				p.setMazeDisplay(this);
 		setSize((int)maze.getBounds().getWidth(), (int)maze.getBounds().getHeight());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		add(maze);
@@ -32,14 +29,11 @@ public class MazeDisplay extends JFrame {
 		Maze m = new Maze("E:\\\\Computer Science\\\\GitHub\\\\MazeSolver\\\\Maze.png");
 		//Maze m = new Maze("C:\\\\Documents\\\\\\\\GitHub\\\\\\\\MazeSolver\\\\\\\\Maze.png");
 		MazeDisplay d = new MazeDisplay(m);
-		LostFriend lf = new LostFriend(3,0,m);
 		try {
 			Thread.sleep(1500);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		lf.moveTo(m.getPoint(3, 1));
 	}
 
 }

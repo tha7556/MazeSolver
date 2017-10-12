@@ -11,15 +11,17 @@ public class LostFriend {
 	private Point startingPoint;
 	private Point currentPoint;
 	private String direction; //TODO: Method to find direction
-	private Point north, south, east, west;
+	private Point north, south, east, west, end;
 	private Maze maze;
-	//TODO: Find way to either generate or pull mazes from library Sample size of > 30
 	
-	public LostFriend(int x, int y, Maze startMaze) { //TODO: Make this class the generic friend (Abstract Classes), extend it into 3 others for the algorithms?
+	public LostFriend(int startx, int starty, int endx, int endy, Maze startMaze) { //TODO: Make this class the generic friend (Abstract Classes), extend it into 3 others for the algorithms?
 		this.maze = startMaze;
-		this.startingPoint = maze.getPoint(x,y);
-		this.currentPoint = maze.getPoint(x,y);
+		this.startingPoint = maze.getPoint(startx,starty);
+		this.currentPoint = maze.getPoint(startx,starty);
+		end = maze.getPoint(endx, endy);
+		System.out.println(startingPoint.getY());
 		this.startingPoint.changeColor(Color.BLUE);
+		end.changeColor(Color.red);
 		getSurroundings();
 		}
 
@@ -64,6 +66,7 @@ public class LostFriend {
 			point.setTraveled(true);
 			point.changeColor(Color.BLUE);
 			pathTaken.addPoint(point.getX(), point.getY());
+			maze.getDisplay().repaint();
 		}
 		else
 			System.out.println("Cannot move to point at: ("+point.getX()+","+point.getY()+")");
@@ -83,10 +86,13 @@ public class LostFriend {
 	public Point getStartingPoint() {
 		return startingPoint;
 	}
+	public Point getCurrentPoint() {
+		return currentPoint;
+	}
 	public static void main(String[] args) {
 		//Maze x = new Maze("C:\\\\Documents\\\\GitHub\\\\MazeSolver\\\\Maze.png");
-		Maze x = new Maze("E:\\\\Computer Science\\\\GitHub\\\\MazeSolver\\\\Maze.png");
-		LostFriend bob = new LostFriend(0,3,x);
+		Maze x = new Maze("E:\\\\Computer Science\\\\GitHub\\\\MazeSolver\\\\Mazes\\\\Small\\\\maze1.png");
+		LostFriend bob = new LostFriend(1,1,x.getMazeWidth()-2, x.getMazeHeight() - 2, x);
 		
 		
 	}

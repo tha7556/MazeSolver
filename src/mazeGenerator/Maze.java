@@ -12,6 +12,7 @@ public class Maze extends JComponent{
 	private Point[][] mazeArray;
 	private BufferedImage image;
 	private int width, height;
+	private MazeDisplay display;
 	public Maze(String fileName) {
 		try {
 			image = ImageIO.read(new File(fileName));
@@ -30,14 +31,18 @@ public class Maze extends JComponent{
  				int green = (pixel >> 8) & 0xff;
  				int blue = (pixel) & 0xff;
  				if((red == 0) && (green == 0) && (blue == 0))
- 					mazeArray[h][w] = new Point(h,w,true);
+ 					mazeArray[h][w] = new Point(h,w,true,this);
  				else
- 					mazeArray[h][w] = new Point(h,w,false);
+ 					mazeArray[h][w] = new Point(h,w,false,this);
 			}
 		}
+		display = new MazeDisplay(this);
 	}
 	public Point[][] getArray() {
 		return mazeArray;
+	}
+	public MazeDisplay getDisplay() {
+		return display;
 	}
 	public Integer getMazeHeight() {
 		return height;
