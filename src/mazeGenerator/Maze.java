@@ -1,4 +1,5 @@
 package mazeGenerator;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -24,16 +25,16 @@ public class Maze extends JComponent{
 		width = image.getWidth();
 		setSize(930,930);
 		mazeArray = new Point[height][width];
-		for(int h = 0; h < height; h++) {
-			for(int w = 0; w < width; w++) {
+		for(int w = 0; w < width; w++) {
+			for(int h = 0; h < height; h++) {
 				int pixel = image.getRGB(w, h);
 				int red = (pixel >> 16) & 0xff;
  				int green = (pixel >> 8) & 0xff;
  				int blue = (pixel) & 0xff;
  				if((red == 0) && (green == 0) && (blue == 0))
- 					mazeArray[h][w] = new Point(h,w,true,this);
+ 					mazeArray[w][h] = new Point(w,h,true,this);
  				else
- 					mazeArray[h][w] = new Point(h,w,false,this);
+ 					mazeArray[w][h] = new Point(w,h,false,this);
 			}
 		}
 		display = new MazeDisplay(this);
@@ -74,7 +75,6 @@ public class Maze extends JComponent{
 	public static void main(String[] args) {
 		Maze m = new Maze("E:\\Computer Science\\GitHub\\MazeSolver\\Mazes\\Small\\maze1.png");
 		//Maze m = new Maze("C:\\\\Documents\\\\GitHub\\\\MazeSolver\\\\Maze.png");
-		m.getArray();
 		m.printArray();
 		
 	}
