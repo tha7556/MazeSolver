@@ -11,7 +11,6 @@ public class Point {
 		traveled = false;
 		this.blocked = blocked;
 		this.maze = maze;
-		
 	}
 	public Integer getX() {
 		return x;

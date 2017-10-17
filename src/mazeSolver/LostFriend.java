@@ -10,7 +10,7 @@ public abstract class LostFriend {
 	protected Path pathTaken;
 	protected Point startingPoint;
 	protected Point currentPoint;
-	protected String direction; //TODO: Method to find direction
+	//protected String direction; //TODO: Method to find direction
 	protected Point north, south, east, west, end;
 	protected Maze maze;
 	
@@ -18,9 +18,7 @@ public abstract class LostFriend {
 		this.maze = startMaze;
 		this.startingPoint = maze.getPoint(startx,starty);
 		this.currentPoint = maze.getPoint(startx,starty);
-		System.out.println(endy);
 		end = maze.getPoint(endx, endy);
-		System.out.println(startingPoint.getY());
 		this.startingPoint.changeColor(Color.BLUE);
 		end.changeColor(Color.red);
 		getSurroundings();
@@ -64,15 +62,23 @@ public abstract class LostFriend {
 		
 		return points;
 	}
-	public void moveTo(Point point) {
-		if (getAvailablePoints().contains(point)) {
-			this.currentPoint = maze.getPoint(point.getX(), point.getY());
+	public void moveTo(Point point, boolean override) {
+		System.out.println("Currently at: "+currentPoint);
+		if (getAvailablePoints().contains(point) || (override && !point.isBlocked())) {
+			this.currentPoint = point;
 			point.setTraveled(true);
 			point.changeColor(Color.BLUE);
 			getSurroundings();
 		}
+		else if(point.isBlocked())
+			throw new RuntimeException("Point: "+point+" is blocked");
+		else if(point.hasTraveled())
+			throw new RuntimeException("Point: "+point+" has already been traversed");
 		else
-			System.out.println("Cannot move to point at: ("+point.getX()+","+point.getY()+")");
+			throw new RuntimeException("Cannot move to point: "+point);
+	}
+	public void moveTo(Point point) {
+		moveTo(point,false);
 	}
 	public Point getNorth() {
 		return north;
@@ -92,12 +98,27 @@ public abstract class LostFriend {
 	public Point getCurrentPoint() {
 		return currentPoint;
 	}
-	public Path solveMaze() {
+	public Path solveMaze(int waitTime) {
 		while(!currentPoint.equals(end)) {
-			Point next = calculateMove();
-			moveTo(next);
+			calculateMove();
+			try {
+				Thread.sleep((long)waitTime);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		for(Point p : pathTaken.getPathArray()) {
+			try {
+				Thread.sleep((long)waitTime/2);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			p.changeColor(Color.green);
 		}
 		return pathTaken;
+	}
+	public Path solveMaze() {
+		return solveMaze(0);
 	}
 	public abstract Point calculateMove();
 	public static void main(String[] args) {
