@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
  
 /*
+ * Mostly not our code, only used to generate the Maze images
  * recursive backtracking algorithm
  * http://weblog.jamisbuck.org/2010/12/27/maze-generation-recursive-backtracking
  */
@@ -18,13 +19,19 @@ public class MazeGenerator {
 	private int x;
 	private int y;
 	private int[][] maze;
- 
+	/**
+	 * Creates a new MazeGenerator to generate mazes of the given size
+	 * @param size The size of the Mazes to be generated
+	 */
 	public MazeGenerator(int size) {
 		this.x = size;
 		this.y = size;
 		maze = new int[this.x][this.y];
 	}
- 
+	/**
+	 * Used to interpret the Maze generated into a format that we can use
+	 * @return ArrayList<String> representation of the Maze
+	 */
 	private ArrayList<String> format() {
 		ArrayList<String> result = new ArrayList<String>(2*y);
 		for (int i = 0; i < y; i++) {
@@ -58,7 +65,11 @@ public class MazeGenerator {
 		result.add(temp);
 		return result;
 	}
- 
+	/**
+	 * Randomly generates a Maze
+	 * @param cx The starting x coordinate (I think)
+	 * @param cy The starting y coordinate (I think)
+	 */
 	private void generateMaze(int cx, int cy) {
 		DIR[] dirs = DIR.values();
 		Collections.shuffle(Arrays.asList(dirs));
@@ -72,12 +83,20 @@ public class MazeGenerator {
 			}
 		}
 	}
+	/**
+	 * Gets the matrix that represents the Maze
+	 * @return int[][] that represents the Maze
+	 */
 	public int[][] getMaze() {
 		return maze;
 	}
 	private static boolean between(int v, int upper) {
 		return (v >= 0) && (v < upper);
 	}
+	/**
+	 * Randomly generates a Maze
+	 * @return A BufferedImage representation of the Maze
+	 */
 	public BufferedImage createMaze() {
 		maze = new int[this.x][this.y];
 		generateMaze(0,0);
@@ -97,6 +116,11 @@ public class MazeGenerator {
 		
 		return image;
 	}
+	/**
+	 * Creates a maze and saves it to the given file
+	 * @param fileName the name of the file to be written to
+	 * @return A BufferedImage representation of the Maze
+	 */
 	public BufferedImage createMaze(String fileName) {
 		BufferedImage image = createMaze();
 		File file = new File(fileName);
@@ -107,7 +131,9 @@ public class MazeGenerator {
 		}
 		return image;
 	}
- 
+	/**
+	 * Used by the generateMaze function to determine locations
+	 */
 	private enum DIR {
 		N(1, 0, -1), S(2, 0, 1), E(4, 1, 0), W(8, -1, 0);
 		private final int bit;
