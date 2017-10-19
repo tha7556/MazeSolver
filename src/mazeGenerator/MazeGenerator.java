@@ -163,7 +163,7 @@ public class MazeGenerator {
 		for(int i = 1; i <= 50; i++) {
 			try {
 				System.out.println(i);
-				BufferedImage image = mazeGenerator.createMaze("E:\\Computer Science\\Github\\MazeSolver\\Mazes\\Small\\Maze"+i+".png");
+				BufferedImage image = mazeGenerator.createMaze("Mazes\\Small\\Maze"+i+".png");
 			} 
 			catch(StackOverflowError e) {
 				i--; //Tries again in case of a stack overflow error

@@ -43,9 +43,7 @@ public class MazeDisplay extends JFrame {
 		this.repaint();
 	}
 	public static void main(String[] args) {
-		Maze m = new Maze("E:\\\\Computer Science\\\\GitHub\\\\MazeSolver\\\\Maze.png");
-		//Maze m = new Maze("C:\\\\Documents\\\\\\\\GitHub\\\\\\\\MazeSolver\\\\\\\\Maze.png");
-		MazeDisplay d = new MazeDisplay(m);
+		Maze m = new Maze("Mazes\\Small\\maze1.png");
 		try {
 			Thread.sleep(1500);
 		} catch (InterruptedException e) {

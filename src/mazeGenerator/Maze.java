@@ -112,7 +112,7 @@ public class Maze extends JComponent{
 		g.drawImage(drawImage, 0, 0, null);
 	}
 	public static void main(String[] args) {
-		Maze m = new Maze("E:\\Computer Science\\GitHub\\MazeSolver\\Mazes\\Small\\maze1.png");
+		Maze m = new Maze("Mazes\\Small\\maze1.png");
 		//Maze m = new Maze("C:\\\\Documents\\\\GitHub\\\\MazeSolver\\\\Maze.png");
 		m.printArray();
 		

@@ -187,8 +187,7 @@ public abstract class LostFriend {
 	 */
 	public abstract Point calculateMove();
 	public static void main(String[] args) {
-		//Maze x = new Maze("C:\\\\Documents\\\\GitHub\\\\MazeSolver\\\\Maze.png");
-		Maze x = new Maze("E:\\\\Computer Science\\\\GitHub\\\\MazeSolver\\\\Mazes\\\\Small\\\\maze1.png");
+		Maze x = new Maze("Mazes\\\\Small\\\\maze1.png");
 		//LostFriend bob = new LostFriend(1,1,x.getMazeWidth()-2, x.getMazeHeight() - 2, x);
 		
 		

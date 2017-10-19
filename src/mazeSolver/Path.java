@@ -57,7 +57,7 @@ public class Path { //TODO: Somehow we ended up with this being just an ArrayLis
 		return maze;
 	}
 	public static void main(String[] args) {
-		Maze maze = new Maze("E:\\Computer Science\\GitHub\\MazeSolver\\Mazes\\Small\\maze1.png");
+		Maze maze = new Maze("Mazes\\Small\\maze1.png");
 		Path p = new Path(maze);
 		p.addPoint(maze.getPoint(0, 1));
 		for(Point point : p.getPathArray()) {
