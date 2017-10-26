@@ -1,9 +1,15 @@
 package mazeSolver;
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
+
 
 import mazeGenerator.Maze;
 import mazeGenerator.Point;
+import mazeGenerator.ImageWriter;
 /**
  * Abstract MazeRunner Class, used to implement generic functions that will be used by the different versions of it
  *
@@ -16,6 +22,7 @@ public abstract class LostFriend {
 	//protected String direction; //TODO: Do we still need this?
 	protected Point north, south, east, west, end;
 	protected Maze maze;
+	protected int stepsTaken;
 	/**
 	 * Constructor that should be extended for each instance of the MazeRunner
 	 * @param startx The starting x coordinate for the MazeRunner
@@ -33,6 +40,7 @@ public abstract class LostFriend {
 		end.changeColor(Color.red);
 		getSurroundings();
 		pathTaken = new Path(maze);
+		stepsTaken = 0;
 		}
 	/**
 	 * Used to get pointers to all of the adjacent points to the MazeRunner
@@ -85,7 +93,8 @@ public abstract class LostFriend {
 	 * @param override true if MazeRunner needs to move somewhere outside of its adjacent points or to a point that it has already traversed
 	 */
 	public void moveTo(Point point, boolean override) {
-		System.out.println("Currently at: "+currentPoint);
+		//System.out.println("Currently at: "+currentPoint);
+		stepsTaken++;
 		if (getAvailablePoints().contains(point) || (override && !point.isBlocked())) {
 			this.currentPoint = point;
 			point.setTraveled(true);
@@ -106,6 +115,13 @@ public abstract class LostFriend {
 	 */
 	public void moveTo(Point point) {
 		moveTo(point,false);
+	}
+	/**
+	 * Gets the number of points that it has traversed
+	 * @return The number of Points that the MazeRunner has traversed
+	 */
+	public int getStepsTaken() {
+		return stepsTaken;
 	}
 	/**
 	 * Gets the Point directly above the MazeRunner
@@ -152,15 +168,26 @@ public abstract class LostFriend {
 	/**
 	 * Calls calculate move repeatedly until currentPoint and end are the same Points, and then highlights the correct Path in green
 	 * @param waitTime Number of milliseconds to wait between movements
+	 * @param fileName The name of the file to save the progress images to
 	 * @return The final Path that it took to reach the end Point
 	 */
-	public Path solveMaze(int waitTime) {
+	public Path solveMaze(int waitTime,String fileName) {
+		ArrayList<Image> imgs = new ArrayList<Image>();
 		while(!currentPoint.equals(end)) {
 			calculateMove();
-			try {
-				Thread.sleep((long)waitTime);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			if(fileName != null) {
+				BufferedImage img = new BufferedImage(maze.getImage().getWidth(), maze.getImage().getHeight(), maze.getImage().getType());
+			    Graphics g = img.getGraphics();
+			    g.drawImage(maze.getImage(), 0, 0, null);
+			    g.dispose();
+				imgs.add(img.getScaledInstance(200, 200, Image.SCALE_SMOOTH));
+			}
+			if(waitTime > 0) {
+				try {
+					Thread.sleep((long)waitTime);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		for(Point p : pathTaken.getPathArray()) {
@@ -170,6 +197,18 @@ public abstract class LostFriend {
 				e.printStackTrace();
 			}
 			p.changeColor(Color.green);
+			
+			if(fileName != null) {
+				BufferedImage img = new BufferedImage(maze.getImage().getWidth(), maze.getImage().getHeight(), maze.getImage().getType());
+			    Graphics g = img.getGraphics();
+			    g.drawImage(maze.getImage(), 0, 0, null);
+			    g.dispose();
+				imgs.add(img.getScaledInstance(200, 200, Image.SCALE_SMOOTH));
+			}
+		}
+		if(fileName != null) {
+			//MazeGenerator.writeImagesToFile(imgs, fileName); 
+			ImageWriter.writeImagesToFile(imgs,fileName);			
 		}
 		return pathTaken;
 	}
@@ -178,7 +217,42 @@ public abstract class LostFriend {
 	 * @return The final Path that it took to reach the end Point
 	 */
 	public Path solveMaze() {
-		return solveMaze(0);
+		return solveMaze(0,null);
+	}
+	/**
+	 * Calls calculate move repeatedly until currentPoint and end are the same Points, and then highlights the correct Path in green
+	 * @param waitTime Number of milliseconds to wait between movements
+	 * @return The final Path that it took to reach the end Point
+	 */
+	public Path solveMaze(int waitTime) {
+		return solveMaze(waitTime,null);
+	} 
+	/**
+	 * Calls calculate move repeatedly until currentPoint and end are the same Points, and then highlights the correct Path in green
+	 * @param fileName The name of the file to save the progress images to
+	 * @return The final Path that it took to reach the end Point
+	 */
+	public Path solveMaze(String fileName) {
+		return solveMaze(0,fileName);
+	}
+	/**
+	 * Tests the MazeRunner by putting it through multiple set mazes and comparing results
+	 * @param mazes The ArrayList of Mazes to test it with
+	 */
+	public static void testFriends(ArrayList<Maze> mazes) {
+		int avgSteps = 0;
+		double avgTime = 0.0;
+		for(Maze m : mazes) {
+			JunctionOriginationFriend jo = new JunctionOriginationFriend(1,1,m.getMazeWidth()-2, m.getMazeHeight() - 2, m);
+			long startTime = System.nanoTime();
+			jo.solveMaze();
+			double totalTime = (System.nanoTime() - startTime)/1000000000.0;
+			avgTime += totalTime;
+			
+			avgSteps += jo.getStepsTaken();
+			System.out.println("Jo solved the maze in: "+jo.getStepsTaken()+" steps, in: "+(totalTime+" seconds"));
+		}
+		System.out.println("Average of: " + (avgSteps / mazes.size())+ " steps per maze, in an average of: "+(avgTime / mazes.size())+" seconds");
 	}
 	/**
 	 * The function that differentiates the different types of MazeRunner.</p>
@@ -187,8 +261,40 @@ public abstract class LostFriend {
 	 */
 	public abstract Point calculateMove();
 	public static void main(String[] args) {
-		Maze x = new Maze("Mazes\\\\Small\\\\maze1.png");
-		//LostFriend bob = new LostFriend(1,1,x.getMazeWidth()-2, x.getMazeHeight() - 2, x);
+		ArrayList<Maze> smallMazes = new ArrayList<Maze>();
+		ArrayList<Maze> mediumMazes = new ArrayList<Maze>();
+		ArrayList<Maze> largeMazes = new ArrayList<Maze>();
+		ArrayList<Maze> crazyMazes = new ArrayList<Maze>();
+		File folder = new File("Mazes\\Small");
+		for(File file : folder.listFiles()) {
+			System.out.println("Small"+file.getName());
+			Maze m = new Maze(file.getPath(), false);
+			smallMazes.add(m);
+		}
+		folder = new File("Mazes\\Medium");
+		for(File file : folder.listFiles()) {
+			System.out.println("Medium"+file.getName());
+			Maze m = new Maze(file.getPath(), false);
+			mediumMazes.add(m);
+		}
+		folder = new File("Mazes\\Large");
+		for(File file : folder.listFiles()) {
+			System.out.println("Large"+file.getName());
+			Maze m = new Maze(file.getPath(), false);
+			largeMazes.add(m);
+		}
+		/*folder = new File("Mazes\\Crazy");
+		File[] files = folder.listFiles();
+		for(int i = 0; i < 10; i++) {
+			File file = files[i];
+			System.out.println("Crazy"+file.getName());
+			Maze m = new Maze(file.getPath(), false);
+			crazyMazes.add(m);
+		}*/
+		System.out.println("done loading the mazes\n");
+		
+		testFriends(largeMazes);
+		
 		
 		
 	}

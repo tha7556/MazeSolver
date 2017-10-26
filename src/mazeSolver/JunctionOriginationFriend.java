@@ -56,7 +56,7 @@ public class JunctionOriginationFriend extends LostFriend {
 			pathTaken.deletePoint(pathTaken.size()-1);
 		} //removes points from path until it encounters the point
 		point.setTraveled(false);
-		System.out.println("Backtracked to: "+point);
+		//System.out.println("Backtracked to: "+point);
 	}
 	/**
 	 * Randomly chooses a Point out of a list of Points
@@ -81,11 +81,10 @@ public class JunctionOriginationFriend extends LostFriend {
 	}
 	
 	public static void main(String[] args) {
-		Maze maze = new Maze("Mazes\\Large\\maze1.png");
+		Maze maze = new Maze("Mazes\\Small\\maze1.png");
 
 		JunctionOriginationFriend friend = new JunctionOriginationFriend(1,1,maze.getMazeWidth()-2, maze.getMazeHeight() - 2, maze);
-		System.out.println(friend.getSouth());
-		friend.solveMaze(20);
+		friend.solveMaze(1);
 	}
 
 }

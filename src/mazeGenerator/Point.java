@@ -75,7 +75,7 @@ public class Point {
 	 * @param color The Color to change the Point to
 	 */
 	public void changeColor(Color color) {
-		maze.getDisplay().changeColor(this, color);
+		maze.changeColor(this, color);
 	}
 	/**
 	 * Represents the Point as (x,y)
