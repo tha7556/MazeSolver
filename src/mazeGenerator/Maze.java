@@ -1,4 +1,5 @@
 package mazeGenerator;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -21,7 +22,7 @@ public class Maze extends JComponent{
 	 * Creates and Displays a Maze read in from an image file where Black = a wall and White = empty space
 	 * @param fileName The String to the image file to be read in
 	 */
-	public Maze(String fileName) {
+	public Maze(String fileName, boolean visible) {
 		try {
 			image = ImageIO.read(new File(fileName));
 		}
@@ -44,7 +45,11 @@ public class Maze extends JComponent{
  					mazeArray[w][h] = new Point(w,h,false,this);
 			}
 		}
-		display = new MazeDisplay(this);
+		if(visible)
+			display = new MazeDisplay(this,visible);
+	}
+	public Maze(String fileName) {
+		this(fileName,true);
 	}
 	/**
 	 * Gets the matrix of Points that represents the Maze
@@ -103,6 +108,10 @@ public class Maze extends JComponent{
 	 */
 	public Point getPoint(int x, int y) {
 		return mazeArray[x][y];
+	}
+	public void changeColor(Point point, Color color) {
+		image.setRGB(point.getX(), point.getY(), color.getRGB());
+		this.repaint();
 	}
 	/**
 	 * Used to draw the Maze in the MazeDisplay

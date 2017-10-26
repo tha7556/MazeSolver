@@ -13,12 +13,12 @@ public class MazeDisplay extends JFrame {
 	 * Creates and displays a Maze in a window
 	 * @param maze
 	 */
-	public MazeDisplay(Maze maze) {
+	public MazeDisplay(Maze maze,boolean visible) {
 		this.maze = maze;
 		setSize((int)maze.getBounds().getWidth(), (int)maze.getBounds().getHeight());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		add(maze);
-		setVisible(true);
+		setVisible(visible);
 	}
 	/**
 	 * Draws the Component onto the Window, The JFrame calls this method automatically
