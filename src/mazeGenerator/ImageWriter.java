@@ -69,8 +69,12 @@ public class ImageWriter implements Runnable{
 	public static void writeImagesToFile(ArrayList<Image> imgs, String location) {
 		int threadCount = 0;
 		for(int i = 0; i < imgs.size(); i++) {
+			String num = "";
+			for(int size = (i+"").length(); size < 8; size++)
+				num += "0";
+			num += i;
 			threadCount = getThreadCount();
-			ImageWriter iw = new ImageWriter(imgs.get(i),location+(i+1)+".png",(i+1));
+			ImageWriter iw = new ImageWriter(imgs.get(i),location+(num)+".png",(i+1));
 			while(threadCount > 100) {
 				try {
 					Thread.sleep(10);

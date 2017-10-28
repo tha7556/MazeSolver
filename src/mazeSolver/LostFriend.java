@@ -23,6 +23,7 @@ public abstract class LostFriend {
 	protected Point north, south, east, west, end;
 	protected Maze maze;
 	protected int stepsTaken;
+	protected boolean[][] knownPoints;
 	/**
 	 * Constructor that should be extended for each instance of the MazeRunner
 	 * @param startx The starting x coordinate for the MazeRunner
@@ -41,7 +42,21 @@ public abstract class LostFriend {
 		getSurroundings();
 		pathTaken = new Path(maze);
 		stepsTaken = 0;
+		knownPoints = new boolean[startMaze.getArray().length][startMaze.getArray()[0].length];
+		for(int x = 0; x < knownPoints.length; x++) {
+			for(int y = 0; y < knownPoints[0].length; y++) {
+				knownPoints[x][y] = false;
+			}
 		}
+	}
+	/**
+	 * Determines whether the mazeRunner has already traveled to the given point or not
+	 * @param point The Point in question
+	 * @return True if the mazeRunner has already been to the Point, False otherwise
+	 */
+	public Boolean hasTraversed(Point point) {
+		return knownPoints[point.getX()][point.getY()];
+	}
 	/**
 	 * Used to get pointers to all of the adjacent points to the MazeRunner
 	 * @return Point[] containing all points that are adjacent to the MazeRunner
@@ -172,15 +187,16 @@ public abstract class LostFriend {
 	 * @return The final Path that it took to reach the end Point
 	 */
 	public Path solveMaze(int waitTime,String fileName) {
-		ArrayList<Image> imgs = new ArrayList<Image>();
+		ArrayList<Image> imgs = new ArrayList<Image>(50000);
 		while(!currentPoint.equals(end)) {
 			calculateMove();
 			if(fileName != null) {
-				BufferedImage img = new BufferedImage(maze.getImage().getWidth(), maze.getImage().getHeight(), maze.getImage().getType());
+				BufferedImage img = new BufferedImage(maze.getImage().getWidth(), maze.getImage().getHeight(), BufferedImage.TYPE_BYTE_INDEXED);
 			    Graphics g = img.getGraphics();
 			    g.drawImage(maze.getImage(), 0, 0, null);
 			    g.dispose();
-				imgs.add(img.getScaledInstance(200, 200, Image.SCALE_SMOOTH));
+				imgs.add(img);
+				System.out.println(imgs.size());
 			}
 			if(waitTime > 0) {
 				try {
@@ -203,11 +219,10 @@ public abstract class LostFriend {
 			    Graphics g = img.getGraphics();
 			    g.drawImage(maze.getImage(), 0, 0, null);
 			    g.dispose();
-				imgs.add(img.getScaledInstance(200, 200, Image.SCALE_SMOOTH));
+				imgs.add(img);
 			}
 		}
 		if(fileName != null) {
-			//MazeGenerator.writeImagesToFile(imgs, fileName); 
 			ImageWriter.writeImagesToFile(imgs,fileName);			
 		}
 		return pathTaken;
