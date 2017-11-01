@@ -19,6 +19,7 @@ public abstract class LostFriend {
 	protected Path pathTaken;
 	protected Point startingPoint;
 	protected Point currentPoint;
+	protected Point facing;
 	//protected String direction; //TODO: Do we still need this?
 	protected Point north, south, east, west, end;
 	protected Maze maze;
@@ -41,6 +42,9 @@ public abstract class LostFriend {
 		getSurroundings();
 		pathTaken = new Path(maze);
 		stepsTaken = 0;
+		ArrayList<Point> availPoints = getAvailablePoints();
+		facing = availPoints.get(0);
+		
 		}
 	/**
 	 * Used to get pointers to all of the adjacent points to the MazeRunner
@@ -115,6 +119,8 @@ public abstract class LostFriend {
 	 */
 	public void moveTo(Point point) {
 		moveTo(point,false);
+		ArrayList<Point> availPoints = getAvailablePoints();
+		facing = availPoints.get(0);
 	}
 	/**
 	 * Gets the number of points that it has traversed
@@ -164,6 +170,10 @@ public abstract class LostFriend {
 	 */
 	public Point getCurrentPoint() {
 		return currentPoint;
+	}
+	
+	public Point getFace() {
+		return facing;
 	}
 	/**
 	 * Calls calculate move repeatedly until currentPoint and end are the same Points, and then highlights the correct Path in green
