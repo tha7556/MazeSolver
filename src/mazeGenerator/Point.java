@@ -70,6 +70,34 @@ public class Point {
 	public boolean isBlocked() {
 		return blocked;
 	}
+	public int getDegree() {
+		Point north,south,east,west;
+		int mazeWidth = maze.getMazeWidth();
+		int mazeHeight = maze.getMazeHeight();
+		if(x > 0) 
+			west = maze.getPoint(x-1,y);
+		else
+			west = null;
+		if(x < mazeWidth)
+			east = maze.getPoint(x+1,y);
+		else
+			east = null;
+		if(y > 0)
+			north = maze.getPoint(x,y-1);
+		else
+			north = null;
+		if(y < mazeHeight)
+			south = maze.getPoint(x,y+1);
+		else
+			south = null;
+		Point[] points = new Point[] {north,south,east,west};
+		int degree = 0;
+		for(Point p : points) {
+			if(p != null && !p.isBlocked())
+				degree++;
+		}
+		return degree;
+	}
 	/**
 	 * Changes the color on the MazeDisplay of this Point
 	 * @param color The Color to change the Point to

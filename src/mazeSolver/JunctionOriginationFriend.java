@@ -81,10 +81,10 @@ public class JunctionOriginationFriend extends LostFriend {
 	}
 	
 	public static void main(String[] args) {
-		Maze maze = new Maze("Mazes\\Large\\maze1.png");
+		Maze maze = new Maze("Mazes\\Large\\maze1.png",false);
 
 		JunctionOriginationFriend friend = new JunctionOriginationFriend(1,1,maze.getMazeWidth()-2, maze.getMazeHeight() - 2, maze);
-		friend.solveMaze("Solutions\\test");
+		friend.solveMaze("Solutions/test");
 	}
 
 }

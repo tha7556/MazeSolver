@@ -187,16 +187,21 @@ public abstract class LostFriend {
 	 * @return The final Path that it took to reach the end Point
 	 */
 	public Path solveMaze(int waitTime,String fileName) {
-		ArrayList<Image> imgs = new ArrayList<Image>(50000);
+		int j = 0;
 		while(!currentPoint.equals(end)) {
+			j++;
 			calculateMove();
 			if(fileName != null) {
 				BufferedImage img = new BufferedImage(maze.getImage().getWidth(), maze.getImage().getHeight(), BufferedImage.TYPE_BYTE_INDEXED);
 			    Graphics g = img.getGraphics();
 			    g.drawImage(maze.getImage(), 0, 0, null);
 			    g.dispose();
-				imgs.add(img);
-				System.out.println(imgs.size());
+			    String num = "";
+				for(int size = (j+"").length(); size < 8; size++)
+					num += "0";
+				num += j;
+				ImageWriter writer = new ImageWriter(img,fileName+num+".png",j);
+				writer.start();
 			}
 			if(waitTime > 0) {
 				try {
@@ -207,6 +212,7 @@ public abstract class LostFriend {
 			}
 		}
 		for(Point p : pathTaken.getPathArray()) {
+			j++;
 			try {
 				Thread.sleep((long)waitTime/2);
 			} catch (InterruptedException e) {
@@ -219,11 +225,13 @@ public abstract class LostFriend {
 			    Graphics g = img.getGraphics();
 			    g.drawImage(maze.getImage(), 0, 0, null);
 			    g.dispose();
-				imgs.add(img);
+			    String num = "";
+				for(int size = (j+"").length(); size < 8; size++)
+					num += "0";
+				num += j;
+				ImageWriter writer = new ImageWriter(img,fileName+num+".png",j);
+				writer.start();
 			}
-		}
-		if(fileName != null) {
-			ImageWriter.writeImagesToFile(imgs,fileName);			
 		}
 		return pathTaken;
 	}
@@ -282,19 +290,19 @@ public abstract class LostFriend {
 		ArrayList<Maze> crazyMazes = new ArrayList<Maze>();
 		File folder = new File("Mazes\\Small");
 		for(File file : folder.listFiles()) {
-			System.out.println("Small"+file.getName());
+			//System.out.println("Small"+file.getName());
 			Maze m = new Maze(file.getPath(), false);
 			smallMazes.add(m);
 		}
 		folder = new File("Mazes\\Medium");
 		for(File file : folder.listFiles()) {
-			System.out.println("Medium"+file.getName());
+			//System.out.println("Medium"+file.getName());
 			Maze m = new Maze(file.getPath(), false);
 			mediumMazes.add(m);
 		}
 		folder = new File("Mazes\\Large");
 		for(File file : folder.listFiles()) {
-			System.out.println("Large"+file.getName());
+			//System.out.println("Large"+file.getName());
 			Maze m = new Maze(file.getPath(), false);
 			largeMazes.add(m);
 		}
@@ -308,7 +316,7 @@ public abstract class LostFriend {
 		}*/
 		System.out.println("done loading the mazes\n");
 		
-		testFriends(largeMazes);
+		testFriends(smallMazes);
 		
 		
 		
