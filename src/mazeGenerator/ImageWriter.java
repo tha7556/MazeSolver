@@ -30,7 +30,7 @@ public class ImageWriter implements Runnable{
 		this.img = img;
 		this.location = location;
 		this.current = current;
-		semaphore = new Semaphore(5);
+		semaphore = new Semaphore(100);
 		done = false;
 		thread = new Thread(this,location+" thread"+current);
 	}
@@ -49,7 +49,7 @@ public class ImageWriter implements Runnable{
 		}
 		File file = new File(location);
 		try {
-			ImageIO.write(bimg, "png", file);
+			ImageIO.write(bimg, "jpg", file);
 			semaphore.release();
 		} catch(Exception e) {
 			e.printStackTrace();

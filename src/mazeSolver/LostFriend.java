@@ -200,7 +200,7 @@ public abstract class LostFriend {
 				for(int size = (j+"").length(); size < 8; size++)
 					num += "0";
 				num += j;
-				ImageWriter writer = new ImageWriter(img,fileName+num+".png",j);
+				ImageWriter writer = new ImageWriter(img,fileName+num+".jpg",j);
 				writer.start();
 			}
 			if(waitTime > 0) {
@@ -221,15 +221,15 @@ public abstract class LostFriend {
 			p.changeColor(Color.green);
 			
 			if(fileName != null) {
-				BufferedImage img = new BufferedImage(maze.getImage().getWidth(), maze.getImage().getHeight(), maze.getImage().getType());
+				BufferedImage img = new BufferedImage(900, 900, maze.getImage().getType());
 			    Graphics g = img.getGraphics();
-			    g.drawImage(maze.getImage(), 0, 0, null);
+			    g.drawImage(maze.getImage().getScaledInstance(900, 900, Image.SCALE_SMOOTH), 0, 0, null);
 			    g.dispose();
 			    String num = "";
 				for(int size = (j+"").length(); size < 8; size++)
 					num += "0";
 				num += j;
-				ImageWriter writer = new ImageWriter(img,fileName+num+".png",j);
+				ImageWriter writer = new ImageWriter(img,fileName+num+".jpg",j);
 				writer.start();
 			}
 		}
