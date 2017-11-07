@@ -19,7 +19,9 @@ public abstract class LostFriend {
 	protected Path pathTaken;
 	protected Point startingPoint;
 	protected Point currentPoint;
-	//protected String direction; //TODO: Do we still need this?
+	protected Point previousPoint;
+	protected Point facing;
+	protected String direction;
 	protected Point north, south, east, west, end;
 	protected Maze maze;
 	protected int stepsTaken;
@@ -42,11 +44,17 @@ public abstract class LostFriend {
 		getSurroundings();
 		pathTaken = new Path(maze);
 		stepsTaken = 0;
+<<<<<<< HEAD
 		knownPoints = new boolean[startMaze.getArray().length][startMaze.getArray()[0].length];
 		for(int x = 0; x < knownPoints.length; x++) {
 			for(int y = 0; y < knownPoints[0].length; y++) {
 				knownPoints[x][y] = false;
 			}
+=======
+		ArrayList<Point> availPoints = getAvailablePoints();
+		facing = availPoints.get(0);
+		
+>>>>>>> wallFollower
 		}
 	}
 	/**
@@ -82,6 +90,24 @@ public abstract class LostFriend {
 			south = maze.getPoint(x,y+1);
 		else
 			south = null;
+		if(previousPoint != null) {
+			if(previousPoint.equals(north)) {
+				facing = south;
+				direction = "South";
+			}
+			else if(previousPoint.equals(east)) {
+				facing = west;
+				direction = "West";
+			}
+			else if(previousPoint.equals(south)) {
+				facing = north;
+				direction = "North";
+			}
+			else if(previousPoint.equals(west)) {
+				facing = east;
+				direction = "East";
+			}
+		}
 		return new Point[]{north,east,south,west};
 	}
 	/**
@@ -91,14 +117,14 @@ public abstract class LostFriend {
 	public ArrayList<Point> getAvailablePoints() {
 		getSurroundings();
 		ArrayList<Point> points = new ArrayList<Point>();
-		if(north != null && !north.isBlocked() && !north.hasTraveled())
-			points.add(north);
-		if(south != null && !south.isBlocked() && !south.hasTraveled())
-			points.add(south);
 		if(east != null && !east.isBlocked() && !east.hasTraveled())
 			points.add(east);
+		if(south != null && !south.isBlocked() && !south.hasTraveled())
+			points.add(south);
 		if(west != null && !west.isBlocked() && !west.hasTraveled())
 			points.add(west);
+		if(north != null && !north.isBlocked() && !north.hasTraveled())
+			points.add(north);
 		
 		return points;
 	}
@@ -108,9 +134,10 @@ public abstract class LostFriend {
 	 * @param override true if MazeRunner needs to move somewhere outside of its adjacent points or to a point that it has already traversed
 	 */
 	public void moveTo(Point point, boolean override) {
-		//System.out.println("Currently at: "+currentPoint);
+		System.out.println("Currently at: "+currentPoint);
 		stepsTaken++;
 		if (getAvailablePoints().contains(point) || (override && !point.isBlocked())) {
+			this.previousPoint = currentPoint;
 			this.currentPoint = point;
 			point.setTraveled(true);
 			point.changeColor(Color.BLUE);
@@ -130,6 +157,14 @@ public abstract class LostFriend {
 	 */
 	public void moveTo(Point point) {
 		moveTo(point,false);
+	}
+	public void backtrackTo(Point point) {
+		while(!pathTaken.getPathArray().get(pathTaken.size()-1).equals(point)) { 
+			pathTaken.deletePoint(pathTaken.size()-1);
+			stepsTaken++;
+		} //removes points from path until it encounters the point
+		point.setTraveled(false);
+		//System.out.println("Backtracked to: "+point);
 	}
 	/**
 	 * Gets the number of points that it has traversed
@@ -179,6 +214,10 @@ public abstract class LostFriend {
 	 */
 	public Point getCurrentPoint() {
 		return currentPoint;
+	}
+	
+	public Point getFace() {
+		return facing;
 	}
 	/**
 	 * Calls calculate move repeatedly until currentPoint and end are the same Points, and then highlights the correct Path in green
