@@ -19,6 +19,7 @@ public abstract class LostFriend {
 	protected Path pathTaken;
 	protected Point startingPoint;
 	protected Point currentPoint;
+	protected Point previousPoint;
 	protected Point facing;
 	protected Point north, south, east, west, end;
 	protected Maze maze;
@@ -70,6 +71,16 @@ public abstract class LostFriend {
 			south = maze.getPoint(x,y+1);
 		else
 			south = null;
+		if(previousPoint != null) {
+			if(previousPoint.equals(north))
+				facing = south;
+			else if(previousPoint.equals(east))
+				facing = west;
+			else if(previousPoint.equals(south))
+				facing = north;
+			else if(previousPoint.equals(west))
+				facing = east;
+		}
 		return new Point[]{north,east,south,west};
 	}
 	/**
@@ -79,14 +90,14 @@ public abstract class LostFriend {
 	public ArrayList<Point> getAvailablePoints() {
 		getSurroundings();
 		ArrayList<Point> points = new ArrayList<Point>();
-		if(north != null && !north.isBlocked() && !north.hasTraveled())
-			points.add(north);
 		if(east != null && !east.isBlocked() && !east.hasTraveled())
 			points.add(east);
 		if(south != null && !south.isBlocked() && !south.hasTraveled())
 			points.add(south);
 		if(west != null && !west.isBlocked() && !west.hasTraveled())
 			points.add(west);
+		if(north != null && !north.isBlocked() && !north.hasTraveled())
+			points.add(north);
 		
 		return points;
 	}
@@ -99,13 +110,11 @@ public abstract class LostFriend {
 		System.out.println("Currently at: "+currentPoint);
 		stepsTaken++;
 		if (getAvailablePoints().contains(point) || (override && !point.isBlocked())) {
+			this.previousPoint = currentPoint;
 			this.currentPoint = point;
 			point.setTraveled(true);
 			point.changeColor(Color.BLUE);
 			getSurroundings();
-			ArrayList<Point> availPoints = getAvailablePoints();
-			if(availPoints.size() > 0)
-				facing = availPoints.get(0);
 		}
 		else if(point.isBlocked())
 			throw new RuntimeException("Point: "+point+" is blocked");
