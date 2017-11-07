@@ -44,17 +44,14 @@ public abstract class LostFriend {
 		getSurroundings();
 		pathTaken = new Path(maze);
 		stepsTaken = 0;
-<<<<<<< HEAD
 		knownPoints = new boolean[startMaze.getArray().length][startMaze.getArray()[0].length];
 		for(int x = 0; x < knownPoints.length; x++) {
 			for(int y = 0; y < knownPoints[0].length; y++) {
 				knownPoints[x][y] = false;
 			}
-=======
 		ArrayList<Point> availPoints = getAvailablePoints();
 		facing = availPoints.get(0);
 		
->>>>>>> wallFollower
 		}
 	}
 	/**
