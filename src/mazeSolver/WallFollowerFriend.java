@@ -7,7 +7,7 @@ import mazeGenerator.Maze;
 import mazeGenerator.Point;
 
 public class WallFollowerFriend extends LostFriend{
-	private boolean rightF = true;
+	private boolean rightF = true; //what is this?
 	private ArrayList<Point> junctions;
 	private Point Facing;
 	
@@ -25,16 +25,18 @@ public class WallFollowerFriend extends LostFriend{
 	public Point calculateMove() {
 		ArrayList<Point> availPoints = getAvailablePoints();
 		Point next = null;
+		System.out.println("Size: "+availPoints.size());
 		if (availPoints.size() == 1) { //One point, move to it
 			next = availPoints.get(0);
 		}
-		else if(availPoints.size()> 1) {//At junction
+		else if(availPoints.size() > 1) { //At junction
 			junctions.add(currentPoint);
 			if (rightF == true) {
 				next = rightMostPoint();
 			}
 		}
 		else { //No Avail points, backTrack
+			System.out.println("about to backtrack");
 			Point lastJunction = getLastJunction();
 			backtrackTo(lastJunction);
 			next = lastJunction;
@@ -51,20 +53,21 @@ public class WallFollowerFriend extends LostFriend{
 	 * @return
 	 */
 	private Point rightMostPoint() {
-		ArrayList<Point> availPoints = getAvailablePoints();
+		for(Point p : getSurroundings())
+			System.out.println(p);
 		Point rMP = null;
-		if (facing == east) {
+		if (facing.equals(east)) {
+			rMP = east;
+		}
+		if (facing.equals(south)) {
 			rMP = south;
 		}
-		if (facing == south) {
+		if (facing.equals(west)) {
 			rMP = west;
 		}
-		if (facing == west) {
+		if (facing.equals(north)) {
 			rMP = north;
 		}
-		if (facing == north) {
-			rMP = east;
-	}
 		return rMP;
 	}
 	
@@ -89,7 +92,7 @@ public class WallFollowerFriend extends LostFriend{
 		Maze maze = new Maze("Mazes\\Small\\maze1.png");
 
 		WallFollowerFriend friend = new WallFollowerFriend(1,1,maze.getMazeWidth()-2, maze.getMazeHeight() - 2, maze);
-		friend.solveMaze(1);
+		friend.solveMaze(100);
 	}
 
 }

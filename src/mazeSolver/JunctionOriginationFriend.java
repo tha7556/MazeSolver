@@ -47,8 +47,8 @@ public class JunctionOriginationFriend extends LostFriend {
 			next.changeColor(Color.cyan);
 			return next;
 		}
-			pathTaken.addPoint(next); //Moves to the calculated Point
-			moveTo(next);
+		pathTaken.addPoint(next); //Moves to the calculated Point
+		moveTo(next);
 		return next;
 	}
 	private void backtrackTo(Point point) {
