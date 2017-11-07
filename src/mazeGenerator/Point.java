@@ -7,6 +7,7 @@ public class Point {
 	private int x, y;
 	private Boolean traveled, blocked;
 	private Maze maze;
+	private Color color;
 	/**
 	 * Creates a new Point in the Maze
 	 * @param x The x coordinate of the Point
@@ -20,6 +21,10 @@ public class Point {
 		traveled = false;
 		this.blocked = blocked;
 		this.maze = maze;
+		if(blocked)
+			color = Color.black;
+		else
+			color = Color.white;
 	}
 	/**
 	 * Gets the x coordinate of the Point
@@ -76,6 +81,10 @@ public class Point {
 	 */
 	public void changeColor(Color color) {
 		maze.changeColor(this, color);
+		this.color = color;
+	}
+	public Color getColor() {
+		return color;
 	}
 	/**
 	 * Represents the Point as (x,y)

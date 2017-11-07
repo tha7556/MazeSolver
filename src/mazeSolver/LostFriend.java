@@ -131,7 +131,7 @@ public abstract class LostFriend {
 	 * @param override true if MazeRunner needs to move somewhere outside of its adjacent points or to a point that it has already traversed
 	 */
 	public void moveTo(Point point, boolean override) {
-		System.out.println("Currently at: "+currentPoint);
+		//System.out.println("Currently at: "+currentPoint);
 		stepsTaken++;
 		if (getAvailablePoints().contains(point) || (override && !point.isBlocked())) {
 			this.previousPoint = currentPoint;
@@ -291,19 +291,37 @@ public abstract class LostFriend {
 	 * @param mazes The ArrayList of Mazes to test it with
 	 */
 	public static void testFriends(ArrayList<Maze> mazes) {
-		int avgSteps = 0;
-		double avgTime = 0.0;
+		int joAvgSteps = 0, rightAvgSteps = 0, leftAvgSteps = 0;
+		double joAvgTime = 0.0, rightAvgTime = 0.0, leftAvgTime = 0.0;
 		for(Maze m : mazes) {
 			JunctionOriginationFriend jo = new JunctionOriginationFriend(1,1,m.getMazeWidth()-2, m.getMazeHeight() - 2, m);
+			WallFollowerFriend rightFriend = new WallFollowerFriend(1,1,m.getMazeWidth()-2, m.getMazeHeight() - 2, m,true);
+			WallFollowerFriend leftFriend = new WallFollowerFriend(1,1,m.getMazeWidth()-2, m.getMazeHeight() - 2, m,false);
+			
 			long startTime = System.nanoTime();
 			jo.solveMaze();
 			double totalTime = (System.nanoTime() - startTime)/1000000000.0;
-			avgTime += totalTime;
-			
-			avgSteps += jo.getStepsTaken();
+			joAvgTime += totalTime;
+			joAvgSteps += jo.getStepsTaken();
 			System.out.println("Jo solved the maze in: "+jo.getStepsTaken()+" steps, in: "+(totalTime+" seconds"));
+			m.reset();
+			startTime = System.nanoTime();
+			rightFriend.solveMaze();
+			totalTime = (System.nanoTime() - startTime)/1000000000.0;
+			rightAvgTime += totalTime;
+			rightAvgSteps += rightFriend.getStepsTaken();
+			System.out.println("RightFriend solved the maze in: "+rightFriend.getStepsTaken()+" steps, in: "+(totalTime+" seconds"));
+			m.reset();
+			startTime = System.nanoTime();
+			leftFriend.solveMaze();
+			totalTime = (System.nanoTime() - startTime)/1000000000.0;
+			leftAvgTime += totalTime;
+			leftAvgSteps += leftFriend.getStepsTaken();
+			System.out.println("LeftFriend solved the maze in: "+leftFriend.getStepsTaken()+" steps, in: "+(totalTime+" seconds"));
 		}
-		System.out.println("Average of: " + (avgSteps / mazes.size())+ " steps per maze, in an average of: "+(avgTime / mazes.size())+" seconds");
+		System.out.println("\n\nJo: Average of: " + (joAvgSteps / mazes.size())+ " steps per maze, in an average of: "+(joAvgTime / mazes.size())+" seconds");
+		System.out.println("RightFriend: Average of: " + (rightAvgSteps / mazes.size())+ " steps per maze, in an average of: "+(rightAvgTime / mazes.size())+" seconds");
+		System.out.println("LeftFriend: Average of: " + (leftAvgSteps / mazes.size())+ " steps per maze, in an average of: "+(leftAvgTime / mazes.size())+" seconds");
 	}
 	/**
 	 * The function that differentiates the different types of MazeRunner.</p>

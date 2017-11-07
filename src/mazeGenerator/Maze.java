@@ -113,6 +113,16 @@ public class Maze extends JComponent{
 		image.setRGB(point.getX(), point.getY(), color.getRGB());
 		this.repaint();
 	}
+	public void reset() {
+		for(Point[] ps : mazeArray) {
+			for(Point p : ps) {
+				if(!p.getColor().equals(Color.white) || !p.getColor().equals(Color.black)) {
+					p.changeColor(Color.white);
+				}
+				p.setTraveled(false);
+			}
+		}
+	}
 	/**
 	 * Used to draw the Maze in the MazeDisplay
 	 */
