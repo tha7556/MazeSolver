@@ -52,23 +52,48 @@ public class WallFollowerFriend extends LostFriend{
 	 * @return
 	 */
 	private Point rightMostPoint() {
-		Point rMP = null;
-		if(facing != null) 
-		if (facing.equals(north)) {
+		Point rMP = null; 
+		System.out.println("Facing: "+direction);
+		if (direction.equals("North")) {
+			if(east != null && !east.isBlocked() && !east.hasTraveled()) {
 			rMP = east;
 			System.out.println("facing north");
+			}
+			else {
+				direction = "East";
+				return rightMostPoint();
+			}
 		}
-		if (facing.equals(east)) {
-			rMP = south;
-			System.out.println("facing east");
+		if (direction.equals("East")) {
+			if(south != null && !south.isBlocked() && !south.hasTraveled()) {
+				rMP = south;
+				System.out.println("facing east");
+			}
+			else {
+				direction = "South";
+				return rightMostPoint();
+			}
 		}
-		if (facing.equals(south)) {
-			rMP = west;
-			System.out.println("facing south");
+		if (direction.equals("South")) {
+			if(west != null && !west.isBlocked() && !west.hasTraveled()) {
+				rMP = west;
+				System.out.println("facing south");
+			}
+			else {
+				direction = "West";
+				return rightMostPoint();
+			}
+			
 		}
-		if (facing.equals(west)) {
-			rMP = north;
-			System.out.println("facing west");
+		if (direction.equals("West")) {
+			if(north != null && !north.isBlocked() && !north.hasTraveled()) {
+				rMP = north;
+				System.out.println("facing west");
+			}
+			else {
+				direction = "North";
+				return rightMostPoint();
+			}			
 		}
 		return rMP;
 	}
@@ -94,7 +119,7 @@ public class WallFollowerFriend extends LostFriend{
 		Maze maze = new Maze("Mazes\\Small\\maze1.png");
 
 		WallFollowerFriend friend = new WallFollowerFriend(1,1,maze.getMazeWidth()-2, maze.getMazeHeight() - 2, maze);
-		friend.solveMaze(100);
+		friend.solveMaze(5);
 	}
 
 }

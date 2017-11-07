@@ -21,6 +21,7 @@ public abstract class LostFriend {
 	protected Point currentPoint;
 	protected Point previousPoint;
 	protected Point facing;
+	protected String direction;
 	protected Point north, south, east, west, end;
 	protected Maze maze;
 	protected int stepsTaken;
@@ -72,14 +73,22 @@ public abstract class LostFriend {
 		else
 			south = null;
 		if(previousPoint != null) {
-			if(previousPoint.equals(north))
+			if(previousPoint.equals(north)) {
 				facing = south;
-			else if(previousPoint.equals(east))
+				direction = "South";
+			}
+			else if(previousPoint.equals(east)) {
 				facing = west;
-			else if(previousPoint.equals(south))
+				direction = "West";
+			}
+			else if(previousPoint.equals(south)) {
 				facing = north;
-			else if(previousPoint.equals(west))
+				direction = "North";
+			}
+			else if(previousPoint.equals(west)) {
 				facing = east;
+				direction = "East";
+			}
 		}
 		return new Point[]{north,east,south,west};
 	}
