@@ -51,13 +51,7 @@ public class JunctionOriginationFriend extends LostFriend {
 		moveTo(next);
 		return next;
 	}
-	private void backtrackTo(Point point) {
-		while(!pathTaken.getPathArray().get(pathTaken.size()-1).equals(point)) { 
-			pathTaken.deletePoint(pathTaken.size()-1);
-		} //removes points from path until it encounters the point
-		point.setTraveled(false);
-		//System.out.println("Backtracked to: "+point);
-	}
+	
 	/**
 	 * Randomly chooses a Point out of a list of Points
 	 * @param points The ArrayList<Point> of Points to choose from

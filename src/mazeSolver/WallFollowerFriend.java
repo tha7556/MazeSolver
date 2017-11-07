@@ -7,17 +7,17 @@ import mazeGenerator.Maze;
 import mazeGenerator.Point;
 
 public class WallFollowerFriend extends LostFriend{
-	private boolean rightF = true; 
+	private boolean rightF; 
 	private ArrayList<Point> junctions;
-	private Point Facing;
 	
-	public WallFollowerFriend(int startx, int starty, int endx, int endy, Maze startMaze) { 
+	public WallFollowerFriend(int startx, int starty, int endx, int endy, Maze startMaze,boolean goRight) { 
 		super(startx, starty, endx, endy, startMaze);
 		
 		getAvailablePoints();
 		junctions = new ArrayList<Point>();
 		pathTaken.addPoint(currentPoint);
 		currentPoint.setTraveled(true);
+		rightF = goRight;
 		
 	}
 
@@ -33,9 +33,11 @@ public class WallFollowerFriend extends LostFriend{
 			if (rightF == true) {
 				next = rightMostPoint();
 			}
+			else {
+				next = leftMostPoint();
+			}
 		}
 		else { //No Avail points, backTrack
-			System.out.println("about to backtrack");
 			Point lastJunction = getLastJunction();
 			backtrackTo(lastJunction);
 			next = lastJunction;
@@ -48,16 +50,14 @@ public class WallFollowerFriend extends LostFriend{
 		return next;
 	}
 	/**
-	 * Chooses the point that if "Right-most" in points
+	 * Chooses the point that is "Right-most" in points
 	 * @return
 	 */
 	private Point rightMostPoint() {
 		Point rMP = null; 
-		System.out.println("Facing: "+direction);
 		if (direction.equals("North")) {
 			if(east != null && !east.isBlocked() && !east.hasTraveled()) {
 			rMP = east;
-			System.out.println("facing north");
 			}
 			else {
 				direction = "East";
@@ -67,7 +67,6 @@ public class WallFollowerFriend extends LostFriend{
 		if (direction.equals("East")) {
 			if(south != null && !south.isBlocked() && !south.hasTraveled()) {
 				rMP = south;
-				System.out.println("facing east");
 			}
 			else {
 				direction = "South";
@@ -77,7 +76,6 @@ public class WallFollowerFriend extends LostFriend{
 		if (direction.equals("South")) {
 			if(west != null && !west.isBlocked() && !west.hasTraveled()) {
 				rMP = west;
-				System.out.println("facing south");
 			}
 			else {
 				direction = "West";
@@ -88,7 +86,6 @@ public class WallFollowerFriend extends LostFriend{
 		if (direction.equals("West")) {
 			if(north != null && !north.isBlocked() && !north.hasTraveled()) {
 				rMP = north;
-				System.out.println("facing west");
 			}
 			else {
 				direction = "North";
@@ -97,15 +94,51 @@ public class WallFollowerFriend extends LostFriend{
 		}
 		return rMP;
 	}
-	
-	private void backtrackTo(Point point) {
-		while(!pathTaken.getPathArray().get(pathTaken.size()-1).equals(point)) { 
-			pathTaken.deletePoint(pathTaken.size()-1);
-		} //removes points from path until it encounters the point
-		point.setTraveled(false);
-		//System.out.println("Backtracked to: "+point);
-	}
-	
+	/**
+	 * Chooses the point that is "Left-most" in points
+	 * @return
+	 */
+	private Point leftMostPoint() {
+		Point lMP = null; 
+		if (direction.equals("North")) {
+			if(west != null && !west.isBlocked() && !west.hasTraveled()) {
+			lMP = west;
+			}
+			else {
+				direction = "South";
+				return leftMostPoint();
+			}
+		}
+		if (direction.equals("East")) {
+			if(north != null && !north.isBlocked() && !north.hasTraveled()) {
+				lMP = north;
+			}
+			else {
+				direction = "North";
+				return leftMostPoint();
+			}
+		}
+		if (direction.equals("South")) {
+			if(east != null && !east.isBlocked() && !east.hasTraveled()) {
+				lMP = east;
+			}
+			else {
+				direction = "East";
+				return rightMostPoint();
+			}
+			
+		}
+		if (direction.equals("West")) {
+			if(south != null && !south.isBlocked() && !south.hasTraveled()) {
+				lMP = south;
+			}
+			else {
+				direction = "South";
+				return rightMostPoint();
+			}			
+		}
+		return lMP;
+	}	
 	private Point getLastJunction() {
 		if(junctions.size() > 0) {
 			Point j = junctions.get(junctions.size()-1);
@@ -118,8 +151,8 @@ public class WallFollowerFriend extends LostFriend{
 	public static void main(String[] args) {
 		Maze maze = new Maze("Mazes\\Small\\maze1.png");
 
-		WallFollowerFriend friend = new WallFollowerFriend(1,1,maze.getMazeWidth()-2, maze.getMazeHeight() - 2, maze);
-		friend.solveMaze(5);
+		WallFollowerFriend friend = new WallFollowerFriend(1,1,maze.getMazeWidth()-2, maze.getMazeHeight() - 2, maze,false);
+		friend.solveMaze();
 	}
 
 }

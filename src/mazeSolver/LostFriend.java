@@ -140,6 +140,14 @@ public abstract class LostFriend {
 	public void moveTo(Point point) {
 		moveTo(point,false);
 	}
+	public void backtrackTo(Point point) {
+		while(!pathTaken.getPathArray().get(pathTaken.size()-1).equals(point)) { 
+			pathTaken.deletePoint(pathTaken.size()-1);
+			stepsTaken++;
+		} //removes points from path until it encounters the point
+		point.setTraveled(false);
+		//System.out.println("Backtracked to: "+point);
+	}
 	/**
 	 * Gets the number of points that it has traversed
 	 * @return The number of Points that the MazeRunner has traversed
