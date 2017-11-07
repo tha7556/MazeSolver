@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.concurrent.Semaphore;
 
 import javax.imageio.ImageIO;
 /**
@@ -17,6 +18,8 @@ public class ImageWriter implements Runnable{
 	private String location;
 	private Thread thread;
 	private int current;
+	private Semaphore semaphore;
+	private boolean done;
 	/**
 	 * Creates a new ImageWriter thread to write a single Maze Image
 	 * @param img The Maze image to write
@@ -27,6 +30,8 @@ public class ImageWriter implements Runnable{
 		this.img = img;
 		this.location = location;
 		this.current = current;
+		semaphore = new Semaphore(100);
+		done = false;
 		thread = new Thread(this,location+" thread"+current);
 	}
 	/**
@@ -44,10 +49,19 @@ public class ImageWriter implements Runnable{
 		}
 		File file = new File(location);
 		try {
-			ImageIO.write(bimg, "png", file);
+			ImageIO.write(bimg, "jpg", file);
+			semaphore.release();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+	}
+	public void start() {
+		try {
+			semaphore.acquire();
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
+		thread.start();
 	}
 	/**
 	 * Gets the Thread that this is running on
@@ -100,6 +114,15 @@ public class ImageWriter implements Runnable{
 				count++;
 		}
 		return count;
+	}
+	public void setDone() {
+		done = true;
+	}
+	public int getNum() {
+		return current;
+	}
+	public boolean isDone() {
+		return done;
 	}
 	public static void main(String[] args) {
 	}

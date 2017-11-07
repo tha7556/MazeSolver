@@ -107,7 +107,12 @@ public class Maze extends JComponent{
 	 * @return The desired Point
 	 */
 	public Point getPoint(int x, int y) {
-		return mazeArray[x][y];
+		if(x < width && x > -1 && y < height && y > -1)
+			return mazeArray[x][y];
+		return null;
+	}
+	public int getArea() {
+		return width * height;
 	}
 	public void changeColor(Point point, Color color) {
 		image.setRGB(point.getX(), point.getY(), color.getRGB());
@@ -130,10 +135,41 @@ public class Maze extends JComponent{
 		Image drawImage = image.getScaledInstance(this.getWidth(),this.getHeight(),BufferedImage.SCALE_SMOOTH);
 		g.drawImage(drawImage, 0, 0, null);
 	}
+	public static int[] analyzeMaze(Maze maze) {
+		int[] degrees = new int[5];
+		for(int i = 0; i < degrees.length; i++)
+			degrees[i] = 0;
+		for(Point points[] : maze.getArray()) {
+			for(Point point : points) {
+				int degree = point.getDegree();
+				if(!point.isBlocked())
+					degrees[degree] += 1;
+			}
+		}
+		return degrees;
+	}
 	public static void main(String[] args) {
-		Maze m = new Maze("Mazes\\Small\\maze1.png");
-		//Maze m = new Maze("C:\\\\Documents\\\\GitHub\\\\MazeSolver\\\\Maze.png");
-		m.printArray();
+		String[] names = new String[] {"Small","Medium","Large","Crazy"};
+		Maze maze = null;
+		for(String size : names) {
+			double[] degrees = new double[5];
+			for(int i = 0; i < degrees.length; i++)
+				degrees[i] = 0.0;
+			for(int i = 1; i < 51; i++) {
+				maze = new Maze("Mazes\\"+size+"\\maze"+i+".png",false);
+				int[] dgs = Maze.analyzeMaze(maze);
+				for(int j = 1; j < degrees.length; j++) {
+					degrees[j] += dgs[j];
+				}
+						
+			}
+			System.out.println(size+" with area: "+maze.getArea());
+			for(int i = 1; i < degrees.length; i++) {
+				degrees[i] /= 50.0;
+				System.out.println("\tDegree "+i+": "+degrees[i]);
+			}
+			System.out.println();
+		}
 		
 	}
 }
