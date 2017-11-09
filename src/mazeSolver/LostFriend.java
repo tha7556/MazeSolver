@@ -311,9 +311,11 @@ public abstract class LostFriend {
 		distancePWriter.println("MazeNumber,Size,Steps,Time");
 		int num = 0;
 		for(File file : files) {
+			
 			System.out.println("reading: "+file);
 			Maze m = Maze.readFromFile(file);
 			System.out.println("done reading: "+file);
+			
 			String size = "";
 			if(m.getArea() == 2601)
 				size = "Small";

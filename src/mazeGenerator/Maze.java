@@ -53,8 +53,8 @@ public class Maze extends JComponent implements Serializable, Runnable{
 			}
 		}
 		if(visible) {
-			display = new MazeDisplay(this,visible);
 			setSize(930,930);
+			display = new MazeDisplay(this,visible);
 		}
 		thread = new Thread(this,"Maze Thread"+System.nanoTime());
 	}
