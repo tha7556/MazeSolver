@@ -4,6 +4,9 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 
@@ -281,11 +284,44 @@ public abstract class LostFriend {
 	/**
 	 * Tests the MazeRunner by putting it through multiple set mazes and comparing results
 	 * @param mazes The ArrayList of Mazes to test it with
+	 * @throws IOException 
 	 */
-	public static void testFriends(ArrayList<Maze> mazes) {
-		int joAvgSteps = 0, rightAvgSteps = 0, leftAvgSteps = 0, robertAvgSteps = 0;
-		double joAvgTime = 0.0, rightAvgTime = 0.0, leftAvgTime = 0.0, robertAvgTime = 0.0;
+	public static void testFriends(Maze[] mazes) throws IOException {
+		int joAvgSteps = 0, rightAvgSteps = 0, leftAvgSteps = 0;
+		double joAvgTime = 0.0, rightAvgTime = 0.0, leftAvgTime = 0.0;
+		File joFile = new File ("JoRunner.csv"); 
+		FileWriter joFWriter = new FileWriter (joFile); 
+		PrintWriter joPWriter = new PrintWriter (joFWriter);
+		
+		File rightFile = new File ("rightRunner.csv"); 
+		FileWriter rightFWriter = new FileWriter (rightFile); 
+		PrintWriter rightPWriter = new PrintWriter (rightFWriter);
+		
+		File leftFile = new File ("leftRunner.csv"); 
+		FileWriter leftFWriter = new FileWriter (leftFile); 
+		PrintWriter leftPWriter = new PrintWriter (leftFWriter);
+		
+		File distanceFile = new File ("distanceRunner.csv"); 
+		FileWriter distanceFWriter = new FileWriter (distanceFile); 
+		PrintWriter distancePWriter = new PrintWriter (distanceFWriter);
+		
+		joPWriter.println("MazeNumber,Size,Steps,Time");
+		rightPWriter.println("MazeNumber,Size,Steps,Time");
+		leftPWriter.println("MazeNumber,Size,Steps,Time");
+		distancePWriter.println("MazeNumber,Size,Steps,Time");
+		int num = 0;
 		for(Maze m : mazes) {
+			String size = "";
+			if(m.getArea() == 2601)
+				size = "Small";
+			else if(m.getArea() == 10201)
+				size = "Medium";
+			else if(m.getArea() == 40401)
+				size = "Large";
+			else if(m.getArea() == 2152089)
+				size = "Crazy";
+			num++;
+			System.out.println("Starting: "+m.getArea()+" "+num);
 			JunctionOriginationFriend jo = new JunctionOriginationFriend(1,1,m.getMazeWidth()-2, m.getMazeHeight() - 2, m);
 			WallFollowerFriend rightFriend = new WallFollowerFriend(1,1,m.getMazeWidth()-2, m.getMazeHeight() - 2, m,true);
 			WallFollowerFriend leftFriend = new WallFollowerFriend(1,1,m.getMazeWidth()-2, m.getMazeHeight() - 2, m,false);
@@ -297,37 +333,49 @@ public abstract class LostFriend {
 			joAvgTime += totalTime;
 			joAvgSteps += jo.getStepsTaken();
 			System.out.println("Jo solved the maze in: "+jo.getStepsTaken()+" steps, in: "+(totalTime+" seconds"));
-			m.reset();
+			joPWriter.println(num+","+size+","+jo.getStepsTaken()+","+totalTime);
 			
+			m.reset();
 			startTime = System.nanoTime();
 			rightFriend.solveMaze();
 			totalTime = (System.nanoTime() - startTime)/1000000000.0;
 			rightAvgTime += totalTime;
 			rightAvgSteps += rightFriend.getStepsTaken();
 			System.out.println("RightFriend solved the maze in: "+rightFriend.getStepsTaken()+" steps, in: "+(totalTime+" seconds"));
-			m.reset();
+			rightPWriter.println(num+","+size+","+rightFriend.getStepsTaken()+","+totalTime);
 			
+			m.reset();
 			startTime = System.nanoTime();
 			leftFriend.solveMaze();
 			totalTime = (System.nanoTime() - startTime)/1000000000.0;
 			leftAvgTime += totalTime;
 			leftAvgSteps += leftFriend.getStepsTaken();
-			System.out.println("LeftFriend solved the maze in: "+leftFriend.getStepsTaken()+" steps, in: "+(totalTime+" seconds"));
+			System.out.println("LeftFriend solved the maze with area: "+ m.getArea()+" "+num + " in: "+leftFriend.getStepsTaken()+" steps, in: "+(totalTime+" seconds"));
+			leftPWriter.println(num+","+size+","+leftFriend.getStepsTaken()+","+totalTime);
 			
+			m.reset();
 			startTime = System.nanoTime();
 			robert.solveMaze();
 			totalTime = (System.nanoTime() - startTime)/1000000000.0;
-			robertAvgTime += totalTime;
-			robertAvgSteps += robert.getStepsTaken();
-			System.out.println("robert solved the maze in: "+robert.getStepsTaken()+" steps, in: "+(totalTime+" seconds"));
-			m.reset();
+			leftAvgTime += totalTime;
+			leftAvgSteps += leftFriend.getStepsTaken();
+			System.out.println("Robert solved the maze with area: "+ m.getArea()+" "+num + " in: "+leftFriend.getStepsTaken()+" steps, in: "+(totalTime+" seconds"));
+			distancePWriter.println(num+","+size+","+leftFriend.getStepsTaken()+","+totalTime);
 			
 			System.out.println("\n----------------------------\n");
 		}
-		System.out.println("\n\nJo: Average of: " + (joAvgSteps / mazes.size())+ " steps per maze, in an average of: "+(joAvgTime / mazes.size())+" seconds");
-		System.out.println("RightFriend: Average of: " + (rightAvgSteps / mazes.size())+ " steps per maze, in an average of: "+(rightAvgTime / mazes.size())+" seconds");
-		System.out.println("LeftFriend: Average of: " + (leftAvgSteps / mazes.size())+ " steps per maze, in an average of: "+(leftAvgTime / mazes.size())+" seconds");
-		System.out.println("robert: Average of: " + (robertAvgSteps / mazes.size())+ " steps per maze, in an average of: "+(robertAvgTime / mazes.size())+" seconds");
+		System.out.println("\n\nJo: Average of: " + (joAvgSteps / mazes.length)+ " steps per maze, in an average of: "+(joAvgTime / mazes.length)+" seconds");
+		System.out.println("RightFriend: Average of: " + (rightAvgSteps / mazes.length)+ " steps per maze, in an average of: "+(rightAvgTime / mazes.length)+" seconds");
+		System.out.println("LeftFriend: Average of: " + (leftAvgSteps / mazes.length)+ " steps per maze, in an average of: "+(leftAvgTime / mazes.length)+" seconds");
+		
+		joPWriter.close();
+		leftPWriter.close();
+		rightPWriter.close();
+		distancePWriter.close();
+		joFWriter.close();
+		leftFWriter.close();
+		rightFWriter.close();
+		distanceFWriter.close();
 	}
 	/**
 	 * The function that differentiates the different types of MazeRunner.</p>
@@ -336,43 +384,54 @@ public abstract class LostFriend {
 	 */
 	public abstract Point calculateMove();
 	public static void main(String[] args) {
-		ArrayList<Maze> smallMazes = new ArrayList<Maze>();
-		ArrayList<Maze> mediumMazes = new ArrayList<Maze>();
-		ArrayList<Maze> largeMazes = new ArrayList<Maze>();
-		ArrayList<Maze> crazyMazes = new ArrayList<Maze>();
+		Maze[] smallMazes = new Maze[50];
+		Maze[] mediumMazes = new Maze[50];
+		Maze[] largeMazes = new Maze[50];
+		Maze[] crazyMazes = new Maze[50];
+		Maze[] allMazes = new Maze[150];
+		
+		int j = 0;
 		File folder = new File("Mazes\\Small");
-		for(File file : folder.listFiles()) {
+		File[] files = folder.listFiles();
+		for(int i = 0; i < files.length; i++, j++) {
+			File file = files[i];
 			//System.out.println("Small"+file.getName());
 			Maze m = new Maze(file.getPath(), false);
-			smallMazes.add(m);
+			smallMazes[i] = m;
+			allMazes[j] = m;
 		}
 		folder = new File("Mazes\\Medium");
-		for(File file : folder.listFiles()) {
+		files = folder.listFiles();
+		for(int i = 0; i < files.length; i++, j++) {
+			File file = files[i];
 			//System.out.println("Medium"+file.getName());
 			Maze m = new Maze(file.getPath(), false);
-			mediumMazes.add(m);
+			mediumMazes[i] = m;
+			allMazes[j] = m;
 		}
 		folder = new File("Mazes\\Large");
-		for(File file : folder.listFiles()) {
+		files = folder.listFiles();
+		for(int i = 0; i < files.length; i++,j++) {
+			File file = files[i];
 			//System.out.println("Large"+file.getName());
 			Maze m = new Maze(file.getPath(), false);
-			largeMazes.add(m);
+			largeMazes[i] = m;
+			allMazes[j] = m;
 		}
-		
-		/* temporarily removed for small-end testing
 		folder = new File("Mazes\\Crazy");
-		File[] files = folder.listFiles();
-		for(int i = 0; i < files.length; i++) {
+		files = folder.listFiles();
+		/*for(int i = 0; i < files.length; i++,j++) {
 			File file = files[i];
 			System.out.println("Crazy"+file.getName());
 			Maze m = new Maze(file.getPath(), false);
-			crazyMazes.add(m);
+			crazyMazes[i] = m;
+			allMazes[j] = m;
+		}*/
+		try {
+			testFriends(allMazes);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		*/
-		
-		System.out.println("done loading the mazes\n");
-		
-		testFriends(mediumMazes);
 		
 		
 		
