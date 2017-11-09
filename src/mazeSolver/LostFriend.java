@@ -287,8 +287,8 @@ public abstract class LostFriend {
 	 * @throws IOException 
 	 */
 	public static void testFriends(Maze[] mazes) throws IOException {
-		int joAvgSteps = 0, rightAvgSteps = 0, leftAvgSteps = 0;
-		double joAvgTime = 0.0, rightAvgTime = 0.0, leftAvgTime = 0.0;
+		int joAvgSteps = 0, rightAvgSteps = 0, leftAvgSteps = 0, distanceAvgSteps = 0;
+		double joAvgTime = 0.0, rightAvgTime = 0.0, leftAvgTime = 0.0, distanceAvgTime = 0.0;
 		File joFile = new File ("JoRunner.csv"); 
 		FileWriter joFWriter = new FileWriter (joFile); 
 		PrintWriter joPWriter = new PrintWriter (joFWriter);
@@ -357,16 +357,17 @@ public abstract class LostFriend {
 			startTime = System.nanoTime();
 			robert.solveMaze();
 			totalTime = (System.nanoTime() - startTime)/1000000000.0;
-			leftAvgTime += totalTime;
-			leftAvgSteps += leftFriend.getStepsTaken();
-			System.out.println("Robert solved the maze with area: "+ m.getArea()+" "+num + " in: "+leftFriend.getStepsTaken()+" steps, in: "+(totalTime+" seconds"));
-			distancePWriter.println(num+","+size+","+leftFriend.getStepsTaken()+","+totalTime);
+			distanceAvgTime += totalTime;
+			distanceAvgSteps += robert.getStepsTaken();
+			System.out.println("Robert solved the maze with area: "+ m.getArea()+" "+num + " in: "+robert.getStepsTaken()+" steps, in: "+(totalTime+" seconds"));
+			distancePWriter.println(num+","+size+","+robert.getStepsTaken()+","+totalTime);
 			
 			System.out.println("\n----------------------------\n");
 		}
 		System.out.println("\n\nJo: Average of: " + (joAvgSteps / mazes.length)+ " steps per maze, in an average of: "+(joAvgTime / mazes.length)+" seconds");
 		System.out.println("RightFriend: Average of: " + (rightAvgSteps / mazes.length)+ " steps per maze, in an average of: "+(rightAvgTime / mazes.length)+" seconds");
 		System.out.println("LeftFriend: Average of: " + (leftAvgSteps / mazes.length)+ " steps per maze, in an average of: "+(leftAvgTime / mazes.length)+" seconds");
+		System.out.println("DistanceFriend: Average of: " + (distanceAvgSteps / mazes.length)+ " steps per maze, in an average of: "+(distanceAvgTime / mazes.length)+" seconds");
 		
 		joPWriter.close();
 		leftPWriter.close();
@@ -388,7 +389,7 @@ public abstract class LostFriend {
 		Maze[] mediumMazes = new Maze[50];
 		Maze[] largeMazes = new Maze[50];
 		Maze[] crazyMazes = new Maze[50];
-		Maze[] allMazes = new Maze[150];
+		Maze[] allMazes = new Maze[200];
 		
 		int j = 0;
 		File folder = new File("Mazes\\Small");
@@ -420,13 +421,15 @@ public abstract class LostFriend {
 		}
 		folder = new File("Mazes\\Crazy");
 		files = folder.listFiles();
-		/*for(int i = 0; i < files.length; i++,j++) {
+		for(int i = 0; i < files.length; i++,j++) {
 			File file = files[i];
 			System.out.println("Crazy"+file.getName());
 			Maze m = new Maze(file.getPath(), false);
+			System.out.println("Maze: "+i+" created");
 			crazyMazes[i] = m;
 			allMazes[j] = m;
-		}*/
+			System.out.println("Maze"+i+" added to arrays");
+		}
 		try {
 			testFriends(allMazes);
 		} catch (IOException e) {

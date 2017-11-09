@@ -31,7 +31,6 @@ public class Maze extends JComponent{
 		}
 		height = image.getHeight();
 		width = image.getWidth();
-		setSize(930,930);
 		mazeArray = new Point[height][width];
 		for(int w = 0; w < width; w++) {
 			for(int h = 0; h < height; h++) {
@@ -45,8 +44,10 @@ public class Maze extends JComponent{
  					mazeArray[w][h] = new Point(w,h,false,this);
 			}
 		}
-		if(visible)
+		if(visible) {
 			display = new MazeDisplay(this,visible);
+			setSize(930,930);
+		}
 	}
 	public Maze(String fileName) {
 		this(fileName,true);
