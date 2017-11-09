@@ -283,12 +283,13 @@ public abstract class LostFriend {
 	 * @param mazes The ArrayList of Mazes to test it with
 	 */
 	public static void testFriends(ArrayList<Maze> mazes) {
-		int joAvgSteps = 0, rightAvgSteps = 0, leftAvgSteps = 0;
-		double joAvgTime = 0.0, rightAvgTime = 0.0, leftAvgTime = 0.0;
+		int joAvgSteps = 0, rightAvgSteps = 0, leftAvgSteps = 0, robertAvgSteps = 0;
+		double joAvgTime = 0.0, rightAvgTime = 0.0, leftAvgTime = 0.0, robertAvgTime = 0.0;
 		for(Maze m : mazes) {
 			JunctionOriginationFriend jo = new JunctionOriginationFriend(1,1,m.getMazeWidth()-2, m.getMazeHeight() - 2, m);
 			WallFollowerFriend rightFriend = new WallFollowerFriend(1,1,m.getMazeWidth()-2, m.getMazeHeight() - 2, m,true);
 			WallFollowerFriend leftFriend = new WallFollowerFriend(1,1,m.getMazeWidth()-2, m.getMazeHeight() - 2, m,false);
+			ManhattenDistanceFriend robert = new ManhattenDistanceFriend(1,1,m.getMazeWidth()-2, m.getMazeHeight() - 2, m);
 			
 			long startTime = System.nanoTime();
 			jo.solveMaze();
@@ -297,6 +298,7 @@ public abstract class LostFriend {
 			joAvgSteps += jo.getStepsTaken();
 			System.out.println("Jo solved the maze in: "+jo.getStepsTaken()+" steps, in: "+(totalTime+" seconds"));
 			m.reset();
+			
 			startTime = System.nanoTime();
 			rightFriend.solveMaze();
 			totalTime = (System.nanoTime() - startTime)/1000000000.0;
@@ -304,17 +306,28 @@ public abstract class LostFriend {
 			rightAvgSteps += rightFriend.getStepsTaken();
 			System.out.println("RightFriend solved the maze in: "+rightFriend.getStepsTaken()+" steps, in: "+(totalTime+" seconds"));
 			m.reset();
+			
 			startTime = System.nanoTime();
 			leftFriend.solveMaze();
 			totalTime = (System.nanoTime() - startTime)/1000000000.0;
 			leftAvgTime += totalTime;
 			leftAvgSteps += leftFriend.getStepsTaken();
 			System.out.println("LeftFriend solved the maze in: "+leftFriend.getStepsTaken()+" steps, in: "+(totalTime+" seconds"));
+			
+			startTime = System.nanoTime();
+			robert.solveMaze();
+			totalTime = (System.nanoTime() - startTime)/1000000000.0;
+			robertAvgTime += totalTime;
+			robertAvgSteps += robert.getStepsTaken();
+			System.out.println("robert solved the maze in: "+robert.getStepsTaken()+" steps, in: "+(totalTime+" seconds"));
+			m.reset();
+			
 			System.out.println("\n----------------------------\n");
 		}
 		System.out.println("\n\nJo: Average of: " + (joAvgSteps / mazes.size())+ " steps per maze, in an average of: "+(joAvgTime / mazes.size())+" seconds");
 		System.out.println("RightFriend: Average of: " + (rightAvgSteps / mazes.size())+ " steps per maze, in an average of: "+(rightAvgTime / mazes.size())+" seconds");
 		System.out.println("LeftFriend: Average of: " + (leftAvgSteps / mazes.size())+ " steps per maze, in an average of: "+(leftAvgTime / mazes.size())+" seconds");
+		System.out.println("robert: Average of: " + (robertAvgSteps / mazes.size())+ " steps per maze, in an average of: "+(robertAvgTime / mazes.size())+" seconds");
 	}
 	/**
 	 * The function that differentiates the different types of MazeRunner.</p>
@@ -345,6 +358,8 @@ public abstract class LostFriend {
 			Maze m = new Maze(file.getPath(), false);
 			largeMazes.add(m);
 		}
+		
+		/* temporarily removed for small-end testing
 		folder = new File("Mazes\\Crazy");
 		File[] files = folder.listFiles();
 		for(int i = 0; i < files.length; i++) {
@@ -353,9 +368,11 @@ public abstract class LostFriend {
 			Maze m = new Maze(file.getPath(), false);
 			crazyMazes.add(m);
 		}
+		*/
+		
 		System.out.println("done loading the mazes\n");
 		
-		testFriends(crazyMazes);
+		testFriends(mediumMazes);
 		
 		
 		

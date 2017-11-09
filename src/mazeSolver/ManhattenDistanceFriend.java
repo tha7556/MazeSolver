@@ -35,23 +35,28 @@ public class ManhattenDistanceFriend extends LostFriend{
 		else if(availPoints.size() > 1) { //At a junction
 			junctions.add(currentPoint);
 			double sDist = 0; //Initializes double
+			
 			for (Point i: availPoints) {
 				double currentDistance = distance(i, end);
 				availPointsDistance.add(currentDistance);
 				if(currentDistance < sDist || sDist == 0) {
 					sDist = currentDistance;
 				}
-				next = availPoints.get(availPointsDistance.indexOf(sDist)); //Next available point matches intdices between the two ArrayLists of availPoints and availPointsDistance
+				//next = availPoints.get(availPointsDistance.indexOf(sDist)); //Next available point matches intdices between the two ArrayLists of availPoints and availPointsDistance
 				}
+			
+			next = availPoints.get(availPointsDistance.indexOf(sDist)); //Next available point matches intdices between the two ArrayLists of availPoints and availPointsDistance
+		
 		}
 				else { //no available points , needs to backtrack
 					Point lastJunction = getLastJunction();
 					backtrackTo(lastJunction);
 					next = lastJunction;
-					moveTo(next,true); //Backtracks to the last junction
+					moveTo(next, true); //Backtracks to the last junction
 					next.changeColor(Color.cyan);
 					return next;
 			}
+		
 		pathTaken.addPoint(next); //Moves to the calculated Point
 		moveTo(next);
 		return next;
@@ -62,10 +67,12 @@ public class ManhattenDistanceFriend extends LostFriend{
 		int ySQR = (r.getY()-q.getY())*(r.getY()-q.getY());
 		return Math.sqrt(xSQR + ySQR);
 	}
+	
 	private Point chooseRandomPoint(ArrayList<Point> points) {
 		Random r = new Random();
 		return points.get(r.nextInt(points.size()));
 	}
+	
 	/**
 	 * Pops the last junction off of the list of junctions
 	 * @return The Point where the last junction is located
@@ -78,11 +85,12 @@ public class ManhattenDistanceFriend extends LostFriend{
 		}
 		return null;
 	}
+	
 	public static void main(String[] args) {
-		Maze maze = new Maze("Mazes\\Crazy\\maze2.png",true);
+		Maze maze = new Maze("Mazes\\Large\\maze2.png",true);
 
-		ManhattenDistanceFriend Robert = new ManhattenDistanceFriend(1,1,maze.getMazeWidth()-2, maze.getMazeHeight() - 2, maze);
-		Robert.solveMaze();
+		ManhattenDistanceFriend robert = new ManhattenDistanceFriend(1,1,maze.getMazeWidth()-2, maze.getMazeHeight() - 2, maze);
+		robert.solveMaze();
 	}
 
 }
