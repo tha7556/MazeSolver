@@ -286,7 +286,7 @@ public abstract class LostFriend {
 	 * @param mazes The ArrayList of Mazes to test it with
 	 * @throws IOException 
 	 */
-	public static void testFriends(Maze[] mazes) throws IOException {
+	public static void testFriends(File[] files) throws IOException {
 		int joAvgSteps = 0, rightAvgSteps = 0, leftAvgSteps = 0, distanceAvgSteps = 0;
 		double joAvgTime = 0.0, rightAvgTime = 0.0, leftAvgTime = 0.0, distanceAvgTime = 0.0;
 		File joFile = new File ("JoRunner.csv"); 
@@ -310,7 +310,10 @@ public abstract class LostFriend {
 		leftPWriter.println("MazeNumber,Size,Steps,Time");
 		distancePWriter.println("MazeNumber,Size,Steps,Time");
 		int num = 0;
-		for(Maze m : mazes) {
+		for(File file : files) {
+			System.out.println("reading: "+file);
+			Maze m = Maze.readFromFile(file);
+			System.out.println("done reading: "+file);
 			String size = "";
 			if(m.getArea() == 2601)
 				size = "Small";
@@ -364,10 +367,10 @@ public abstract class LostFriend {
 			
 			System.out.println("\n----------------------------\n");
 		}
-		System.out.println("\n\nJo: Average of: " + (joAvgSteps / mazes.length)+ " steps per maze, in an average of: "+(joAvgTime / mazes.length)+" seconds");
-		System.out.println("RightFriend: Average of: " + (rightAvgSteps / mazes.length)+ " steps per maze, in an average of: "+(rightAvgTime / mazes.length)+" seconds");
-		System.out.println("LeftFriend: Average of: " + (leftAvgSteps / mazes.length)+ " steps per maze, in an average of: "+(leftAvgTime / mazes.length)+" seconds");
-		System.out.println("DistanceFriend: Average of: " + (distanceAvgSteps / mazes.length)+ " steps per maze, in an average of: "+(distanceAvgTime / mazes.length)+" seconds");
+		System.out.println("\n\nJo: Average of: " + (joAvgSteps / files.length)+ " steps per maze, in an average of: "+(joAvgTime / files.length)+" seconds");
+		System.out.println("RightFriend: Average of: " + (rightAvgSteps / files.length)+ " steps per maze, in an average of: "+(rightAvgTime / files.length)+" seconds");
+		System.out.println("LeftFriend: Average of: " + (leftAvgSteps / files.length)+ " steps per maze, in an average of: "+(leftAvgTime / files.length)+" seconds");
+		System.out.println("DistanceFriend: Average of: " + (distanceAvgSteps / files.length)+ " steps per maze, in an average of: "+(distanceAvgTime / files.length)+" seconds");
 		
 		joPWriter.close();
 		leftPWriter.close();
@@ -385,55 +388,46 @@ public abstract class LostFriend {
 	 */
 	public abstract Point calculateMove();
 	public static void main(String[] args) {
-		Maze[] smallMazes = new Maze[50];
-		Maze[] mediumMazes = new Maze[50];
-		Maze[] largeMazes = new Maze[50];
-		Maze[] crazyMazes = new Maze[50];
-		Maze[] allMazes = new Maze[200];
-		
-		int j = 0;
-		File folder = new File("Mazes\\Small");
-		File[] files = folder.listFiles();
-		for(int i = 0; i < files.length; i++, j++) {
-			File file = files[i];
-			//System.out.println("Small"+file.getName());
-			Maze m = new Maze(file.getPath(), false);
-			smallMazes[i] = m;
-			allMazes[j] = m;
+		File[] files = new File("Mazes\\SerializedObjects").listFiles();
+		if(files.length < 200) { //write mazes
+			//Maze.writeAllMazesFromFolder("Mazes\\Small", "Mazes\\SerializedObjects\\Small");
+			//Maze.writeAllMazesFromFolder("Mazes\\Medium", "Mazes\\SerializedObjects\\Medium");
+			//Maze.writeAllMazesFromFolder("Mazes\\Large", "Mazes\\SerializedObjects\\Large");
+			Maze.writeAllMazesFromFolder("Mazes\\Crazy", "Mazes\\SerializedObjects\\Crazy"); //Takes a long time/memory
 		}
-		folder = new File("Mazes\\Medium");
-		files = folder.listFiles();
-		for(int i = 0; i < files.length; i++, j++) {
-			File file = files[i];
-			//System.out.println("Medium"+file.getName());
-			Maze m = new Maze(file.getPath(), false);
-			mediumMazes[i] = m;
-			allMazes[j] = m;
-		}
-		folder = new File("Mazes\\Large");
-		files = folder.listFiles();
-		for(int i = 0; i < files.length; i++,j++) {
-			File file = files[i];
-			//System.out.println("Large"+file.getName());
-			Maze m = new Maze(file.getPath(), false);
-			largeMazes[i] = m;
-			allMazes[j] = m;
-		}
-		folder = new File("Mazes\\Crazy");
-		files = folder.listFiles();
-		for(int i = 0; i < files.length; i++,j++) {
-			File file = files[i];
-			System.out.println("Crazy"+file.getName());
-			Maze m = new Maze(file.getPath(), false);
-			System.out.println("Maze: "+i+" created");
-			crazyMazes[i] = m;
-			allMazes[j] = m;
-			System.out.println("Maze"+i+" added to arrays");
-		}
-		try {
-			testFriends(allMazes);
-		} catch (IOException e) {
-			e.printStackTrace();
+		else { //test mazes
+			try {
+				File[] fs = new File[files.length];
+				int j = 0;
+				for(int i = 0; i < fs.length; i++) {
+					if(files[i].getName().contains("Small")) {
+						fs[j] = files[i];
+						j++;
+					}
+				}
+				for(int i = 0; i < fs.length; i++) {
+					if(files[i].getName().contains("Medium")) {
+						fs[j] = files[i];
+						j++;
+					}
+				}
+				for(int i = 0; i < fs.length; i++) {
+					if(files[i].getName().contains("Large")) {
+						fs[j] = files[i];
+						j++;
+					}
+				}
+				for(int i = 0; i < fs.length; i++) {
+					if(files[i].getName().contains("Crazy")) {
+						fs[j] = files[i];
+						j++;
+					}
+				}
+				System.out.println("starting tests");
+				LostFriend.testFriends(fs);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		

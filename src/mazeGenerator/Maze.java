@@ -4,20 +4,28 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
-
 /**
  * The Maze that the MazeRunner will attempt to solve
  *
  */
-public class Maze extends JComponent{
+public class Maze extends JComponent implements Serializable, Runnable{
 
 	private static final long serialVersionUID = 1L;
 	private Point[][] mazeArray;
-	private BufferedImage image;
+	private transient BufferedImage image;
 	private int width, height;
 	private MazeDisplay display;
+	private String name;
+	private transient Thread thread;
 	/**
 	 * Creates and Displays a Maze read in from an image file where Black = a wall and White = empty space
 	 * @param fileName The String to the image file to be read in
@@ -48,6 +56,7 @@ public class Maze extends JComponent{
 			display = new MazeDisplay(this,visible);
 			setSize(930,930);
 		}
+		thread = new Thread(this,"Maze Thread"+System.nanoTime());
 	}
 	public Maze(String fileName) {
 		this(fileName,true);
@@ -87,6 +96,12 @@ public class Maze extends JComponent{
 	public BufferedImage getImage() {
 		return image;
 	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getName() {
+		return name;
+	}
 	/**
 	 * Prints the Maze to the console where 1 = wall and 0 = empty space
 	 */
@@ -115,6 +130,9 @@ public class Maze extends JComponent{
 	public int getArea() {
 		return width * height;
 	}
+	public Thread getThread() {
+		return thread;
+	}
 	public void changeColor(Point point, Color color) {
 		image.setRGB(point.getX(), point.getY(), color.getRGB());
 		this.repaint();
@@ -136,6 +154,61 @@ public class Maze extends JComponent{
 		Image drawImage = image.getScaledInstance(this.getWidth(),this.getHeight(),BufferedImage.SCALE_SMOOTH);
 		g.drawImage(drawImage, 0, 0, null);
 	}
+	private void writeObject(ObjectOutputStream output) throws IOException {  
+		output.defaultWriteObject();
+		ImageIO.write(image, "png", output);
+	}
+	private void readObject(ObjectInputStream input) throws IOException, ClassNotFoundException {  
+		input.defaultReadObject();
+		image = ImageIO.read(input);
+	}
+	public void writeToFile(String fileName) {
+		System.out.println("Starting to write: " + fileName);
+		try {
+			long startTime = System.nanoTime();
+			FileOutputStream fileOut = new FileOutputStream(fileName);
+		    ObjectOutputStream out = new ObjectOutputStream(fileOut);
+		    out.writeObject(this);
+		    out.close();
+		    fileOut.close(); 
+		    long endTime = System.nanoTime();
+		    System.out.println("\tWrote: "+fileName+" in: " + (endTime-startTime)/1000000000.0 + " seconds");
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	public static Maze readFromFile(File file) {
+		try {
+			FileInputStream fileIn = new FileInputStream(file);
+	        ObjectInputStream in = new ObjectInputStream(fileIn);
+			Maze maze = (Maze) in.readObject();
+	        in.close();
+	        fileIn.close();
+	        return maze;
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	public static void writeAllMazesFromFolder(String folderName,String newFolderName) {
+		File folder = new File(folderName);
+		File[] files = folder.listFiles();
+		for(int i = 0; i < files.length; i++) {
+			while(Thread.getAllStackTraces().size() > 20) {
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			File file = files[i];
+			Maze m = new Maze(file.getPath(), false);
+			m.setName(newFolderName+(i+1));
+			m.getThread().start();
+		}
+	}
 	public static int[] analyzeMaze(Maze maze) {
 		int[] degrees = new int[5];
 		for(int i = 0; i < degrees.length; i++)
@@ -148,6 +221,9 @@ public class Maze extends JComponent{
 			}
 		}
 		return degrees;
+	}
+	public void run() {
+		writeToFile(name+".maze");
 	}
 	public static void main(String[] args) {
 		String[] names = new String[] {"Small","Medium","Large","Crazy"};

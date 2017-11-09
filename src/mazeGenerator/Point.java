@@ -1,9 +1,14 @@
 package mazeGenerator;
 import java.awt.Color;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 /**
  * A single Point in the Maze
  */
-public class Point {
+public class Point implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private int x, y;
 	private Boolean traveled, blocked;
 	private Maze maze;
@@ -119,5 +124,11 @@ public class Point {
 	 */
 	public String toString() {
 		return "("+x+","+y+")";
+	}
+	private void writeObject(ObjectOutputStream o) throws IOException {  
+		o.defaultWriteObject();
+	}
+	private void readObject(ObjectInputStream o) throws IOException, ClassNotFoundException {  
+		o.defaultReadObject();
 	}
 }
