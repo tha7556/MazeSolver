@@ -25,7 +25,6 @@ public abstract class LostFriend {
 	protected Point north, south, east, west, end;
 	protected Maze maze;
 	protected int stepsTaken;
-	protected boolean[][] knownPoints;
 	/**
 	 * Constructor that should be extended for each instance of the MazeRunner
 	 * @param startx The starting x coordinate for the MazeRunner
@@ -44,23 +43,8 @@ public abstract class LostFriend {
 		getSurroundings();
 		pathTaken = new Path(maze);
 		stepsTaken = 0;
-		knownPoints = new boolean[startMaze.getArray().length][startMaze.getArray()[0].length];
-		for(int x = 0; x < knownPoints.length; x++) {
-			for(int y = 0; y < knownPoints[0].length; y++) {
-				knownPoints[x][y] = false;
-			}
 		ArrayList<Point> availPoints = getAvailablePoints();
 		facing = availPoints.get(0);
-		
-		}
-	}
-	/**
-	 * Determines whether the mazeRunner has already traveled to the given point or not
-	 * @param point The Point in question
-	 * @return True if the mazeRunner has already been to the Point, False otherwise
-	 */
-	public Boolean hasTraversed(Point point) {
-		return knownPoints[point.getX()][point.getY()];
 	}
 	/**
 	 * Used to get pointers to all of the adjacent points to the MazeRunner
@@ -326,6 +310,7 @@ public abstract class LostFriend {
 			leftAvgTime += totalTime;
 			leftAvgSteps += leftFriend.getStepsTaken();
 			System.out.println("LeftFriend solved the maze in: "+leftFriend.getStepsTaken()+" steps, in: "+(totalTime+" seconds"));
+			System.out.println("\n----------------------------\n");
 		}
 		System.out.println("\n\nJo: Average of: " + (joAvgSteps / mazes.size())+ " steps per maze, in an average of: "+(joAvgTime / mazes.size())+" seconds");
 		System.out.println("RightFriend: Average of: " + (rightAvgSteps / mazes.size())+ " steps per maze, in an average of: "+(rightAvgTime / mazes.size())+" seconds");
@@ -360,17 +345,17 @@ public abstract class LostFriend {
 			Maze m = new Maze(file.getPath(), false);
 			largeMazes.add(m);
 		}
-		/*folder = new File("Mazes\\Crazy");
+		folder = new File("Mazes\\Crazy");
 		File[] files = folder.listFiles();
-		for(int i = 0; i < 10; i++) {
+		for(int i = 0; i < files.length; i++) {
 			File file = files[i];
 			System.out.println("Crazy"+file.getName());
 			Maze m = new Maze(file.getPath(), false);
 			crazyMazes.add(m);
-		}*/
+		}
 		System.out.println("done loading the mazes\n");
 		
-		testFriends(smallMazes);
+		testFriends(crazyMazes);
 		
 		
 		
