@@ -87,10 +87,10 @@ public class ManhattenDistanceFriend extends LostFriend{
 	}
 	
 	public static void main(String[] args) {
-		Maze maze = new Maze("Mazes\\Crazy\\maze2.png",true);
+		Maze maze = new Maze("Mazes\\Crazy\\maze1.png",true);
 
 		ManhattenDistanceFriend robert = new ManhattenDistanceFriend(1,1,maze.getMazeWidth()-2, maze.getMazeHeight() - 2, maze);
-		robert.solveMaze();
+		robert.solveMaze("E:\\Pictures\\Solutions\\test");
 	}
 
 }

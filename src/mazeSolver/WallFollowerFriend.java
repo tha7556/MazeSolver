@@ -149,10 +149,10 @@ public class WallFollowerFriend extends LostFriend{
 	}
 	
 	public static void main(String[] args) {
-		Maze maze = new Maze("Mazes\\Crazy\\maze2.png");
+		Maze maze = new Maze("Mazes\\Crazy\\maze1.png");
 
-		WallFollowerFriend friend = new WallFollowerFriend(1,1,maze.getMazeWidth()-2, maze.getMazeHeight() - 2, maze,false);
-		friend.solveMaze();
+		WallFollowerFriend friend = new WallFollowerFriend(1,1,maze.getMazeWidth()-2, maze.getMazeHeight() - 2, maze,true);
+		friend.solveMaze("E:\\Pictures\\Solutions\\test");
 	}
 
 }

@@ -79,7 +79,7 @@ public class JunctionOriginationFriend extends LostFriend {
 
 		JunctionOriginationFriend friend = new JunctionOriginationFriend(1,1,maze.getMazeWidth()-2, maze.getMazeHeight() - 2, maze);
 		friend.solveMaze("E:\\Pictures\\Solutions\\test");
-		//ffmpeg.exe -framerate 30 -i E:\Pictures\Solutions\test%08d.png -r 30 -pix_fmt yuv420p -vf scale=300:-2 test5.mp4
+		//ffmpeg.exe -framerate 30 -i E:\Pictures\Solutions\test%08d.jpg -r 30 -pix_fmt yuv420p -vf scale=300:-2 test5.mp4
 	}
 
 }

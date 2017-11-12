@@ -39,6 +39,7 @@ public class ImageWriter implements Runnable{
 	 */
 	public void writeImageToFile() {
 		BufferedImage bimg = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+		
 		if(img instanceof BufferedImage) {
 			bimg = (BufferedImage)img;
 		}
@@ -49,7 +50,7 @@ public class ImageWriter implements Runnable{
 		}
 		File file = new File(location);
 		try {
-			ImageIO.write(bimg, "jpg", file);
+			ImageIO.write(bimg, "png", file);
 			semaphore.release();
 		} catch(Exception e) {
 			e.printStackTrace();
