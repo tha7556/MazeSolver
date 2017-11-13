@@ -2,7 +2,6 @@ package mazeSolver;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Random;
 
 import mazeGenerator.Maze;
 import mazeGenerator.Point;
@@ -66,11 +65,6 @@ public class ManhattenDistanceFriend extends LostFriend{
 		int xSQR = (r.getX() - q.getX())*(r.getX() - q.getX());
 		int ySQR = (r.getY()-q.getY())*(r.getY()-q.getY());
 		return Math.sqrt(xSQR + ySQR);
-	}
-	
-	private Point chooseRandomPoint(ArrayList<Point> points) {
-		Random r = new Random();
-		return points.get(r.nextInt(points.size()));
 	}
 	
 	/**
