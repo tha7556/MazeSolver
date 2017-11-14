@@ -15,7 +15,7 @@ public class WallFollowerFriend extends LostFriend{
 		
 		getAvailablePoints();
 		junctions = new ArrayList<Point>();
-		pathTaken.addPoint(currentPoint);
+		pathTaken.add(currentPoint);
 		currentPoint.setTraveled(true);
 		rightF = goRight;
 		
@@ -42,10 +42,10 @@ public class WallFollowerFriend extends LostFriend{
 			backtrackTo(lastJunction);
 			next = lastJunction;
 			moveTo(next, true); //Backtracks to last junction
-			next.changeColor(Color.cyan);
+			//next.changeColor(Color.cyan);
 			return next;
 		}
-		pathTaken.addPoint(next); //moves to Point
+		pathTaken.add(next); //moves to Point
 		moveTo(next);
 		return next;
 	}
@@ -149,10 +149,10 @@ public class WallFollowerFriend extends LostFriend{
 	}
 	
 	public static void main(String[] args) {
-		Maze maze = new Maze("Mazes\\Crazy\\maze1.png");
+		Maze maze = new Maze("Mazes\\Medium\\maze1.png");
 
 		WallFollowerFriend friend = new WallFollowerFriend(1,1,maze.getMazeWidth()-2, maze.getMazeHeight() - 2, maze,true);
-		friend.solveMaze("E:\\Pictures\\Solutions\\test");
+		friend.solveMaze("E:\\Pictures\\Solutions");
 	}
 
 }

@@ -19,7 +19,7 @@ import mazeGenerator.ImageWriter;
  */
 public abstract class LostFriend {
 
-	protected Path pathTaken;
+	protected ArrayList<Point> pathTaken;
 	protected Point startingPoint;
 	protected Point currentPoint;
 	protected Point previousPoint;
@@ -44,7 +44,7 @@ public abstract class LostFriend {
 		this.startingPoint.changeColor(Color.BLUE);
 		end.changeColor(Color.red);
 		getSurroundings();
-		pathTaken = new Path(maze);
+		pathTaken = new ArrayList<Point>();
 		stepsTaken = 0;
 		ArrayList<Point> availPoints = getAvailablePoints();
 		facing = availPoints.get(0);
@@ -144,8 +144,8 @@ public abstract class LostFriend {
 		moveTo(point,false);
 	}
 	public void backtrackTo(Point point) {
-		while(!pathTaken.getPathArray().get(pathTaken.size()-1).equals(point)) { 
-			pathTaken.deletePoint(pathTaken.size()-1);
+		while(!pathTaken.get(pathTaken.size()-1).equals(point)) { 
+			pathTaken.remove(pathTaken.size()-1);
 			stepsTaken++;
 		} //removes points from path until it encounters the point
 		point.setTraveled(false);
@@ -190,6 +190,9 @@ public abstract class LostFriend {
 	public Point getWest() {
 		return west;
 	}
+	public ArrayList<Point> getPath() {
+		return pathTaken;
+	}
 	/**
 	 * Gets the Point that the MazeRunner started at
 	 * @return The Point that the MazeRunner started at
@@ -214,13 +217,13 @@ public abstract class LostFriend {
 	 * @param fileName The name of the file to save the progress images to
 	 * @return The final Path that it took to reach the end Point
 	 */
-	public Path solveMaze(int waitTime,String fileName) {
+	public ArrayList<Point> solveMaze(int waitTime,String fileName) {
 		int j = 0;
 		int y = 0;
 		while(!currentPoint.equals(end)) {
 			j++;
 			calculateMove();
-			if(fileName != null && (j==1 || j % 500 == 0)) {
+			if(fileName != null) {
 				y++;
 				BufferedImage img = new BufferedImage(maze.getImage().getWidth(), maze.getImage().getHeight(), BufferedImage.TYPE_BYTE_INDEXED);
 			    Graphics g = img.getGraphics();
@@ -241,7 +244,7 @@ public abstract class LostFriend {
 				}
 			}
 		}
-		for(Point p : pathTaken.getPathArray()) {
+		for(Point p : pathTaken) {
 			j++;
 			try {
 				Thread.sleep((long)waitTime/2);
@@ -250,7 +253,7 @@ public abstract class LostFriend {
 			}
 			p.changeColor(Color.green);
 			
-			if(fileName != null && (j==1 || j % 500 == 0)) {
+			if(fileName != null) {
 				y++;
 				BufferedImage img = new BufferedImage(900, 900, maze.getImage().getType());
 			    Graphics g = img.getGraphics();
@@ -270,7 +273,7 @@ public abstract class LostFriend {
 	 * Calls calculate move repeatedly until currentPoint and end are the same Points, and then highlights the correct Path in green
 	 * @return The final Path that it took to reach the end Point
 	 */
-	public Path solveMaze() {
+	public ArrayList<Point> solveMaze() {
 		return solveMaze(0,null);
 	}
 	/**
@@ -278,7 +281,7 @@ public abstract class LostFriend {
 	 * @param waitTime Number of milliseconds to wait between movements
 	 * @return The final Path that it took to reach the end Point
 	 */
-	public Path solveMaze(int waitTime) {
+	public ArrayList<Point> solveMaze(int waitTime) {
 		return solveMaze(waitTime,null);
 	} 
 	/**
@@ -286,7 +289,7 @@ public abstract class LostFriend {
 	 * @param fileName The name of the file to save the progress images to
 	 * @return The final Path that it took to reach the end Point
 	 */
-	public Path solveMaze(String fileName) {
+	public ArrayList<Point> solveMaze(String fileName) {
 		return solveMaze(0,fileName);
 	}
 	/**
@@ -314,10 +317,10 @@ public abstract class LostFriend {
 		FileWriter distanceFWriter = new FileWriter (distanceFile); 
 		PrintWriter distancePWriter = new PrintWriter (distanceFWriter);
 		
-		joPWriter.println("MazeNumber,Size,Steps,Time,Backtracks,Total Junctions");
-		rightPWriter.println("MazeNumber,Size,Steps,Time,Backtracks,Total Junctions");
-		leftPWriter.println("MazeNumber,Size,Steps,Time,Backtracks,Total Junctions");
-		distancePWriter.println("MazeNumber,Size,Steps,Time,Backtracks,Total Junctions");
+		joPWriter.println("MazeNumber,Size,Steps,Time,Backtracks,Total Junctions,PathPoints");
+		rightPWriter.println("MazeNumber,Size,Steps,Time,Backtracks,Total Junctions,PathPoints");
+		leftPWriter.println("MazeNumber,Size,Steps,Time,Backtracks,Total Junctions,PathPoints");
+		distancePWriter.println("MazeNumber,Size,Steps,Time,Backtracks,Total Junctions,PathPoints");
 		int num = 0;
 		int totalJuncs = 0;
 		for(File file : files) {
@@ -352,8 +355,8 @@ public abstract class LostFriend {
 			joAvgSteps += jo.getStepsTaken();
 			joAvgBacks += jo.getBacktrackCount();
 			
-			System.out.println("Jo solved the maze in: "+jo.getStepsTaken()+" steps, in: "+(totalTime+" seconds, and backtracked: "+jo.getBacktrackCount())+"/"+juncCount+" junctions");
-			joPWriter.println(num+","+size+","+jo.getStepsTaken()+","+totalTime+","+jo.getBacktrackCount()+","+juncCount);
+			System.out.println("Jo solved the maze in: "+jo.getStepsTaken()+" steps, in: "+(totalTime+" seconds, and backtracked: "+jo.getBacktrackCount())+"/"+juncCount+" junctions, final path has: "+jo.getPath().size()+" points");
+			joPWriter.println(num+","+size+","+jo.getStepsTaken()+","+totalTime+","+jo.getBacktrackCount()+","+juncCount+","+jo.getPath().size());
 			
 			m.reset();
 			startTime = System.nanoTime();
@@ -363,8 +366,8 @@ public abstract class LostFriend {
 			rightAvgSteps += rightFriend.getStepsTaken();
 			rightAvgBacks += rightFriend.getBacktrackCount();
 			
-			System.out.println("RightFriend solved the maze in: "+rightFriend.getStepsTaken()+" steps, in: "+(totalTime+" seconds, and backtracked: "+rightFriend.getBacktrackCount()+"/"+juncCount+" junctions"));
-			rightPWriter.println(num+","+size+","+rightFriend.getStepsTaken()+","+totalTime+","+rightFriend.getBacktrackCount()+","+juncCount);
+			System.out.println("RightFriend solved the maze in: "+rightFriend.getStepsTaken()+" steps, in: "+(totalTime+" seconds, and backtracked: "+rightFriend.getBacktrackCount()+"/"+juncCount+" junctions, final path has: "+jo.getPath().size()+" points"));
+			rightPWriter.println(num+","+size+","+rightFriend.getStepsTaken()+","+totalTime+","+rightFriend.getBacktrackCount()+","+juncCount+","+jo.getPath().size());
 			
 			m.reset();
 			startTime = System.nanoTime();
@@ -374,8 +377,8 @@ public abstract class LostFriend {
 			leftAvgSteps += leftFriend.getStepsTaken();
 			leftAvgBacks += leftFriend.getBacktrackCount();
 			
-			System.out.println("LeftFriend solved the maze in: "+leftFriend.getStepsTaken()+" steps, in: "+(totalTime+" seconds, and backtracked: "+leftFriend.getBacktrackCount()+"/"+juncCount+" junctions"));
-			leftPWriter.println(num+","+size+","+leftFriend.getStepsTaken()+","+totalTime+","+leftFriend.getBacktrackCount()+","+juncCount);
+			System.out.println("LeftFriend solved the maze in: "+leftFriend.getStepsTaken()+" steps, in: "+(totalTime+" seconds, and backtracked: "+leftFriend.getBacktrackCount()+"/"+" junctions, final path has: "+jo.getPath().size()+" points"));
+			leftPWriter.println(num+","+size+","+leftFriend.getStepsTaken()+","+totalTime+","+leftFriend.getBacktrackCount()+","+juncCount+","+jo.getPath().size());
 			
 			m.reset();
 			startTime = System.nanoTime();
@@ -385,8 +388,8 @@ public abstract class LostFriend {
 			distanceAvgSteps += robert.getStepsTaken();
 			distanceAvgBacks += robert.getBacktrackCount();
 			
-			System.out.println("robert solved the maze in: "+robert.getStepsTaken()+" steps, in: "+(totalTime+" seconds, and backtracked: "+robert.getBacktrackCount()+"/"+juncCount+" junctions"));
-			distancePWriter.println(num+","+size+","+robert.getStepsTaken()+","+totalTime+","+robert.getBacktrackCount()+","+juncCount);
+			System.out.println("robert solved the maze in: "+robert.getStepsTaken()+" steps, in: "+(totalTime+" seconds, and backtracked: "+robert.getBacktrackCount()+"/"+juncCount+" junctions, final path has: "+jo.getPath().size()+" points"));
+			distancePWriter.println(num+","+size+","+robert.getStepsTaken()+","+totalTime+","+robert.getBacktrackCount()+","+juncCount+","+jo.getPath().size());
 			
 			System.out.println("\n----------------------------\n");
 		}

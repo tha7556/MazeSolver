@@ -23,7 +23,7 @@ public class JunctionOriginationFriend extends LostFriend {
 		super(startx, starty, endx, endy, startMaze);
 		getAvailablePoints();
 		junctions = new ArrayList<Point>();
-		pathTaken.addPoint(currentPoint);
+		pathTaken.add(currentPoint);
 		currentPoint.setTraveled(true);
 	}
 	/**
@@ -47,7 +47,7 @@ public class JunctionOriginationFriend extends LostFriend {
 			next.changeColor(Color.cyan);
 			return next;
 		}
-		pathTaken.addPoint(next); //Moves to the calculated Point
+		pathTaken.add(next); //Moves to the calculated Point
 		moveTo(next);
 		return next;
 	}

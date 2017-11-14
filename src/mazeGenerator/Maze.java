@@ -162,6 +162,10 @@ public class Maze extends JComponent implements Serializable, Runnable{
 		input.defaultReadObject();
 		image = ImageIO.read(input);
 	}
+	public void makeVisible() {
+		setSize(930,930);
+		display = new MazeDisplay(this,true);
+	}
 	public void writeToFile(String fileName) {
 		System.out.println("Starting to write: " + fileName);
 		try {
@@ -241,11 +245,13 @@ public class Maze extends JComponent implements Serializable, Runnable{
 						
 			}
 			System.out.println(size+" with area: "+maze.getArea());
+			double total = 0.0;
 			for(int i = 1; i < degrees.length; i++) {
 				degrees[i] /= 50.0;
+				total += degrees[i];
 				System.out.println("\tDegree "+i+": "+degrees[i]);
 			}
-			System.out.println();
+			System.out.println("Total open points: " + total);
 		}
 		
 	}
