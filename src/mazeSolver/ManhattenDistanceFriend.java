@@ -41,10 +41,10 @@ public class ManhattenDistanceFriend extends LostFriend{
 				if(currentDistance < sDist || sDist == 0) {
 					sDist = currentDistance;
 				}
-				//next = availPoints.get(availPointsDistance.indexOf(sDist)); //Next available point matches intdices between the two ArrayLists of availPoints and availPointsDistance
+				//next = availPoints.get(availPointsDistance.indexOf(sDist)); //Next available point matches indices between the two ArrayLists of availPoints and availPointsDistance
 				}
 			
-			next = availPoints.get(availPointsDistance.indexOf(sDist)); //Next available point matches intdices between the two ArrayLists of availPoints and availPointsDistance
+			next = availPoints.get(availPointsDistance.indexOf(sDist)); //Next available point matches indices between the two ArrayLists of availPoints and availPointsDistance
 		
 		}
 				else { //no available points , needs to backtrack
@@ -79,12 +79,21 @@ public class ManhattenDistanceFriend extends LostFriend{
 		}
 		return null;
 	}
+	/**
+	 * getjunctSize is primarily intended to illustrate complexity
+	 * @return The amount of junctions that a particular runner has taken
+	 */
+	public int getJunctSize() {
+		return junctions.size();
+	}
 	
 	public static void main(String[] args) {
 		Maze maze = new Maze("Mazes\\Crazy\\maze1.png",true);
-
+		
 		ManhattenDistanceFriend robert = new ManhattenDistanceFriend(1,1,maze.getMazeWidth()-2, maze.getMazeHeight() - 2, maze);
-		robert.solveMaze("E:\\Pictures\\Solutions\\test");
+		//robert.solveMaze("E:\\Pictures\\Solutions\\test");
+		robert.solveMaze(0);
+	
 	}
 
 }

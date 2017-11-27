@@ -18,7 +18,7 @@ import mazeGenerator.ImageWriter;
  *
  */
 public abstract class LostFriend {
-
+	 
 	protected ArrayList<Point> pathTaken;
 	protected Point startingPoint;
 	protected Point currentPoint;
@@ -269,6 +269,7 @@ public abstract class LostFriend {
 		}
 		return pathTaken;
 	}
+	
 	/**
 	 * Calls calculate move repeatedly until currentPoint and end are the same Points, and then highlights the correct Path in green
 	 * @return The final Path that it took to reach the end Point
@@ -317,10 +318,10 @@ public abstract class LostFriend {
 		FileWriter distanceFWriter = new FileWriter (distanceFile); 
 		PrintWriter distancePWriter = new PrintWriter (distanceFWriter);
 		
-		joPWriter.println("MazeNumber,Size,Steps,Time,Backtracks,Total Junctions,PathPoints");
-		rightPWriter.println("MazeNumber,Size,Steps,Time,Backtracks,Total Junctions,PathPoints");
-		leftPWriter.println("MazeNumber,Size,Steps,Time,Backtracks,Total Junctions,PathPoints");
-		distancePWriter.println("MazeNumber,Size,Steps,Time,Backtracks,Total Junctions,PathPoints");
+		joPWriter.println("MazeNumber,Size,Steps,Time,Backtracks,Total Junctions,PathPoints, JunctionsTaken");
+		rightPWriter.println("MazeNumber,Size,Steps,Time,Backtracks,Total Junctions,PathPoints, JunctionsTaken");
+		leftPWriter.println("MazeNumber,Size,Steps,Time,Backtracks,Total Junctions,PathPoints, JunctionsTaken");
+		distancePWriter.println("MazeNumber,Size,Steps,Time,Backtracks,Total Junctions,PathPoints, JunctionsTaken");
 		int num = 0;
 		int totalJuncs = 0;
 		for(File file : files) {
@@ -356,7 +357,7 @@ public abstract class LostFriend {
 			joAvgBacks += jo.getBacktrackCount();
 			
 			System.out.println("Jo solved the maze in: "+jo.getStepsTaken()+" steps, in: "+(totalTime+" seconds, and backtracked: "+jo.getBacktrackCount())+"/"+juncCount+" junctions, final path has: "+jo.getPath().size()+" points");
-			joPWriter.println(num+","+size+","+jo.getStepsTaken()+","+totalTime+","+jo.getBacktrackCount()+","+juncCount+","+jo.getPath().size());
+			joPWriter.println(num+","+size+","+jo.getStepsTaken()+","+totalTime+","+jo.getBacktrackCount()+","+juncCount+","+jo.getPath().size() +","+ jo.getJunctSize());
 			
 			m.reset();
 			startTime = System.nanoTime();
@@ -367,7 +368,7 @@ public abstract class LostFriend {
 			rightAvgBacks += rightFriend.getBacktrackCount();
 			
 			System.out.println("RightFriend solved the maze in: "+rightFriend.getStepsTaken()+" steps, in: "+(totalTime+" seconds, and backtracked: "+rightFriend.getBacktrackCount()+"/"+juncCount+" junctions, final path has: "+jo.getPath().size()+" points"));
-			rightPWriter.println(num+","+size+","+rightFriend.getStepsTaken()+","+totalTime+","+rightFriend.getBacktrackCount()+","+juncCount+","+jo.getPath().size());
+			rightPWriter.println(num+","+size+","+rightFriend.getStepsTaken()+","+totalTime+","+rightFriend.getBacktrackCount()+","+juncCount+","+jo.getPath().size()+","+ rightFriend.getJunctSize());
 			
 			m.reset();
 			startTime = System.nanoTime();
@@ -378,7 +379,7 @@ public abstract class LostFriend {
 			leftAvgBacks += leftFriend.getBacktrackCount();
 			
 			System.out.println("LeftFriend solved the maze in: "+leftFriend.getStepsTaken()+" steps, in: "+(totalTime+" seconds, and backtracked: "+leftFriend.getBacktrackCount()+"/"+" junctions, final path has: "+jo.getPath().size()+" points"));
-			leftPWriter.println(num+","+size+","+leftFriend.getStepsTaken()+","+totalTime+","+leftFriend.getBacktrackCount()+","+juncCount+","+jo.getPath().size());
+			leftPWriter.println(num+","+size+","+leftFriend.getStepsTaken()+","+totalTime+","+leftFriend.getBacktrackCount()+","+juncCount+","+jo.getPath().size()+","+ leftFriend.getJunctSize());
 			
 			m.reset();
 			startTime = System.nanoTime();
@@ -389,7 +390,7 @@ public abstract class LostFriend {
 			distanceAvgBacks += robert.getBacktrackCount();
 			
 			System.out.println("robert solved the maze in: "+robert.getStepsTaken()+" steps, in: "+(totalTime+" seconds, and backtracked: "+robert.getBacktrackCount()+"/"+juncCount+" junctions, final path has: "+jo.getPath().size()+" points"));
-			distancePWriter.println(num+","+size+","+robert.getStepsTaken()+","+totalTime+","+robert.getBacktrackCount()+","+juncCount+","+jo.getPath().size());
+			distancePWriter.println(num+","+size+","+robert.getStepsTaken()+","+totalTime+","+robert.getBacktrackCount()+","+juncCount+","+robert.getPath().size() +","+ robert.getJunctSize());
 			
 			System.out.println("\n----------------------------\n");
 		}

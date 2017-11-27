@@ -20,6 +20,7 @@ public class MazeDisplay extends JFrame {
 		add(maze);
 		setVisible(visible);
 	}
+	
 	/**
 	 * Draws the Component onto the Window, The JFrame calls this method automatically
 	 */
@@ -38,10 +39,12 @@ public class MazeDisplay extends JFrame {
 	 * @param point The Point being referenced
 	 * @param color The Color to change the Point to
 	 */
+
 	public void changeColor(Point point, Color color) {
 		maze.getImage().setRGB(point.getX(), point.getY(), color.getRGB());
 		this.repaint();
 	}
+
 	public static void main(String[] args) {
 		Maze m = new Maze("Mazes\\Small\\maze1.png");
 	}

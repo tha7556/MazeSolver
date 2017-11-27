@@ -147,6 +147,13 @@ public class WallFollowerFriend extends LostFriend{
 		}
 		return null;
 	}
+	/**
+	 * getjunctSize is primarily intended to illustrate complexity
+	 * @return The amount of junctions that a particular runner has taken
+	 */
+	public int getJunctSize() {
+		return junctions.size();
+	}
 	
 	public static void main(String[] args) {
 		Maze maze = new Maze("Mazes\\Medium\\maze1.png");
