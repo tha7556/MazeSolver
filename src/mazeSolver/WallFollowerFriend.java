@@ -152,7 +152,7 @@ public class WallFollowerFriend extends LostFriend{
 		Maze maze = new Maze("Mazes\\Medium\\maze1.png");
 
 		WallFollowerFriend friend = new WallFollowerFriend(1,1,maze.getMazeWidth()-2, maze.getMazeHeight() - 2, maze,true);
-		friend.solveMaze("E:\\Pictures\\Solutions");
+		friend.solveMaze(25);
 	}
 
 }
