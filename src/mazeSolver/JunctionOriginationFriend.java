@@ -10,7 +10,8 @@ import mazeGenerator.Point;
  * Solves the Maze by randomly selecting a Point  when at a junction, and when it encounters a dead-end it backtracks to the last junction
  */
 public class JunctionOriginationFriend extends LostFriend {
-	private ArrayList<Point> junctions; 
+	private ArrayList<Point> junctions;
+	private int trueJunctions; //This is the sum of all choices made by the Runner
 	/**
 	 * Creates a new MazeRunner using the Junction Origination algorithm
 	 * @param startx The starting x coordinate for the MazeRunner
@@ -37,7 +38,8 @@ public class JunctionOriginationFriend extends LostFriend {
 		}
 		else if(points.size() > 1) { //At a junction
 			junctions.add(currentPoint);
-			next = chooseRandomPoint(points);						
+			next = chooseRandomPoint(points);
+			trueJunctions++;
 		}
 		else { //no available points , needs to backtrack
 			Point lastJunction = getLastJunction();
@@ -78,7 +80,7 @@ public class JunctionOriginationFriend extends LostFriend {
 	 * @return The amount of junctions that a particular runner has taken
 	 */
 	public int getJunctSize() {
-		return junctions.size();
+		return trueJunctions;
 	}
 	
 	public static void main(String[] args) {

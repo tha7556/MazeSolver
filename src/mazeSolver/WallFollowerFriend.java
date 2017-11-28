@@ -9,6 +9,7 @@ import mazeGenerator.Point;
 public class WallFollowerFriend extends LostFriend{
 	private boolean rightF; 
 	private ArrayList<Point> junctions;
+	private int trueJunctions; //This is the sum of all choices made by the Runner
 	
 	public WallFollowerFriend(int startx, int starty, int endx, int endy, Maze startMaze,boolean goRight) { 
 		super(startx, starty, endx, endy, startMaze);
@@ -36,6 +37,7 @@ public class WallFollowerFriend extends LostFriend{
 			else {
 				next = leftMostPoint();
 			}
+			trueJunctions++;
 		}
 		else { //No Avail points, backTrack
 			Point lastJunction = getLastJunction();
@@ -152,7 +154,7 @@ public class WallFollowerFriend extends LostFriend{
 	 * @return The amount of junctions that a particular runner has taken
 	 */
 	public int getJunctSize() {
-		return junctions.size();
+		return trueJunctions;
 	}
 	
 	public static void main(String[] args) {

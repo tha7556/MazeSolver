@@ -8,7 +8,8 @@ import mazeGenerator.Point;
 
 public class ManhattenDistanceFriend extends LostFriend{
 	private ArrayList<Point> junctions;
-
+	private int trueJunctions; //This is the sum of all choices made by the Runner
+	
 	public ManhattenDistanceFriend(int startx, int starty, int endx, int endy, Maze startMaze) {
 		super(startx, starty, endx, endy, startMaze);
 		getAvailablePoints();
@@ -34,7 +35,7 @@ public class ManhattenDistanceFriend extends LostFriend{
 		else if(availPoints.size() > 1) { //At a junction
 			junctions.add(currentPoint);
 			double sDist = 0; //Initializes double
-			
+			trueJunctions++;
 			for (Point i: availPoints) {
 				double currentDistance = distance(i, end);
 				availPointsDistance.add(currentDistance);
@@ -84,15 +85,15 @@ public class ManhattenDistanceFriend extends LostFriend{
 	 * @return The amount of junctions that a particular runner has taken
 	 */
 	public int getJunctSize() {
-		return junctions.size();
+		return trueJunctions;
 	}
 	
 	public static void main(String[] args) {
-		Maze maze = new Maze("Mazes\\Crazy\\maze1.png",true);
+		Maze maze = new Maze("Mazes\\small\\maze1.png",true);
 		
 		ManhattenDistanceFriend robert = new ManhattenDistanceFriend(1,1,maze.getMazeWidth()-2, maze.getMazeHeight() - 2, maze);
-		//robert.solveMaze("E:\\Pictures\\Solutions\\test");
-		robert.solveMaze(0);
+		robert.solveMaze("E:\\Pictures\\Solutions\\test");
+		//robert.solveMaze(0);
 	
 	}
 
