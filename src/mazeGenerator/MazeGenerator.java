@@ -12,8 +12,11 @@ import java.util.Arrays;
  
 /*
  * Mostly not our code, only used to generate the Maze images
- * recursive backtracking algorithm
- * http://weblog.jamisbuck.org/2010/12/27/maze-generation-recursive-backtracking
+ * recursive backtracking algorithm, adapted from Ruby to Java
+ * 
+ * Buck J. (2010). Maze Generation: Recursive Backtracking. [Source Code]. 
+ * Retrieved from http://weblog.jamisbuck.org/2010/12/27/maze-generation-recursive-backtracking
+ * 
  */
 public class MazeGenerator {
 	private int x;

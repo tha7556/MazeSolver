@@ -1,0 +1,1 @@
+typeSearchIndex = [{"p":"mazeGenerator","l":"ImageWriter"},{"p":"mazeGenerator","l":"Maze"},{"p":"mazeGenerator","l":"MazeDisplay"},{"p":"mazeGenerator","l":"MazeGenerator"},{"p":"mazeGenerator","l":"Point"}]
