@@ -8,7 +8,7 @@ The start of each maze is the top left, and the bottom right is the end. The run
 **Junction Origination**<br/>
 Whenever the runner encounters a dead-end, it moves back to the previous junction. The light blue squares represent junctions that the runner has jumped back to.
 
-![Junction Origination Small](https://github.com/tha7556/MazeSolver/blob/master/junction%20origination%20small.png)
+<img src="https://camo.githubusercontent.com/..." data-canonical-src="https://github.com/tha7556/MazeSolver/blob/master/left%20wall%20small.png" width="200" height="200" />
 
 **Wall Follower**<br/>
 The runner follows a wall (either right or left) until it makes it to the end of the maze. The image below shows the runner following the left wall.
